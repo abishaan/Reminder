@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:reminder/screens/calendar_screen.dart';
 import 'package:reminder/screens/events_screen.dart';
 import 'package:reminder/utils/theme_color.dart';
@@ -121,7 +122,7 @@ class _HomePageState extends State<HomePage> {
               ),
               IconButton(
                 icon: Icon(
-                  Icons.calendar_today,
+                  MdiIcons.calendarClock,
                   size: 26,
                   color: _bottomNavCalender
                       ? ThemeColor.primary

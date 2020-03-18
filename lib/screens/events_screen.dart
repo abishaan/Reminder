@@ -174,7 +174,7 @@ class _EventsScreenState extends State<EventsScreen> {
         style: TextStyle(
           color: ThemeColor.subTitleColor,
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: 18,
         ),
       ),
     );
@@ -211,7 +211,7 @@ class _EventsScreenState extends State<EventsScreen> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 20,
+              height: 10,
             ),
             _eventLabel('Categories'),
             SizedBox(
@@ -222,11 +222,11 @@ class _EventsScreenState extends State<EventsScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildCategory(Colors.purple, Colors.pink, 'Personal'),
-                  _buildCategory(Colors.pink, Colors.red, 'Study'),
-                  _buildCategory(Colors.red, Colors.deepOrange, 'Meeting'),
-                  _buildCategory(Colors.deepOrange, Colors.orange, 'Work'),
-                  _buildCategory(Colors.orange, Colors.amber, 'Others'),
+                  _buildCategory(Colors.purple.withAlpha(450), Colors.pink.withAlpha(450), 'Personal'),
+                  _buildCategory(Colors.pink.withAlpha(450), Colors.red.withAlpha(450), 'Study'),
+                  _buildCategory(Colors.red.withAlpha(450), Colors.deepOrange.withAlpha(450), 'Meeting'),
+                  _buildCategory(Colors.deepOrange.withAlpha(450), Colors.orange.withAlpha(450), 'Work'),
+                  _buildCategory(Colors.orange.withAlpha(450), Colors.amber.withAlpha(450), 'Others'),
                   SizedBox(
                     width: 20,
                   ),
