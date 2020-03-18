@@ -1,6 +1,6 @@
-# reminder
+# Reminder
 
-A new Flutter application.
+As a reminder user i need to be able to get reminded of events on a set time
 
 ## Getting Started
 
