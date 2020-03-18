@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder/models/event_model.dart';
 import 'package:reminder/utils/theme_color.dart';
@@ -26,13 +29,11 @@ class _EventScreenState extends State<EventScreen> {
 
   Widget _buildEventRow(int index) {
     return Card(
-      elevation: 2,
-      shape: Border(
-        left: BorderSide(
-          color: index % 2 == 0 ? Colors.deepPurple : Colors.red,
-          width: 5,
-        ),
-      ),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side:
+              BorderSide(width: 2, color: ThemeColor.darkAccent.withAlpha(50))),
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
         height: 120,
@@ -125,79 +126,239 @@ class _EventScreenState extends State<EventScreen> {
   Widget _buildEventListRow(int index) {
     return Stack(
       children: <Widget>[
-        Positioned(
-          top: 0.0,
-          bottom: 0.0,
-          left: 45.0,
-          child: Container(
-            height: double.infinity,
-            width: 3,
-            color: Colors.grey.withAlpha(50),
-          ),
-        ),
-        Positioned(
-          top: 65.0,
-          left: 38,
-          child: Container(
-            height: 16.0,
-            width: 16.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: index % 2 == 0
-                  ? Colors.deepPurpleAccent.withAlpha(1000)
-                  : Colors.redAccent.withAlpha(1000),
-              boxShadow: [
-                BoxShadow(
-                  spreadRadius: 5,
-                  color: index % 2 == 0
-                      ? Colors.deepPurple.withAlpha(100)
-                      : Colors.red.withAlpha(100),
-                ),
-              ],
-            ),
-          ),
-        ),
         Padding(
-          padding: const EdgeInsets.only(left: 60.0),
+          padding: const EdgeInsets.only(left: 0.0),
           child: _buildEventRow(index),
         )
       ],
     );
   }
 
-  Widget _eventLabel(String label) {
+  Widget _eventLabel(String label, int index) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(vertical: 10),
       alignment: Alignment.topLeft,
-      child: Text(
-        label,
-        style: TextStyle(
-          color: ThemeColor.subTitleColor,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
+      child: Stack(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(15, 0, 0, 12),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: ThemeColor.darkAccent,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: 3,
+            left: 15,
+            width: 30,
+            height: 2.5,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  stops: [0.1, 1],
+                  colors: [
+                    ThemeColor.darkAccent.withAlpha(700),
+                    ThemeColor.titleColor.withAlpha(700),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          index == 2
+              ? Positioned(
+                  bottom: 3,
+                  left: 50,
+                  width: 30,
+                  height: 2.5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        stops: [0.1, 1],
+                        colors: [
+                          ThemeColor.darkAccent.withAlpha(700),
+                          ThemeColor.titleColor.withAlpha(700),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : SizedBox(),
+        ],
       ),
     );
   }
 
-  Widget _buildCategory(Color color1, Color color2, String label) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(20, 10, 0, 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-            colors: [color1, color2],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0, 1]),
+  Widget _buildCategory(Icon icon, String label) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+            child: IconButton(
+              icon: icon,
+              color: ThemeColor.darkAccent,
+              onPressed: () {},
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Text(
+              label,
+              style: TextStyle(
+                  color: ThemeColor.titleColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12),
+            ),
+          ),
+        ],
       ),
-      height: 80,
-      width: 80,
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+    );
+  }
+
+  Widget _categoryCard(String title) {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+              color: ThemeColor.primaryAccent.withAlpha(40), width: 1)),
+      child: Container(
+        height: 150,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(20),
+            splashColor: ThemeColor.lightPurple.withAlpha(20),
+            onTap: () {},
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 35,
+                  right: -50,
+                  child: ClipRect(
+                    child: CircleAvatar(
+                      backgroundColor: ThemeColor.darkAccent,
+                      radius: 40,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: -105,
+                  left: 135,
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundColor: ThemeColor.lightPurple.withAlpha(20),
+                  ),
+                ),
+                Positioned(
+                  top: 70,
+                  left: -70,
+                  child: CircleAvatar(
+                    radius: 80,
+                    backgroundColor: ThemeColor.lightPurple.withAlpha(25),
+                  ),
+                ),
+                ListTile(
+                  title: Container(
+                    padding: EdgeInsets.fromLTRB(8, 6, 0, 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Title',
+                          style: TextStyle(
+                              color: ThemeColor.titleColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 28),
+                        ),
+                        Container(
+                          height: 12,
+                          width: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 4,
+                                color: ThemeColor.accent.withAlpha(700),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  subtitle: Padding(
+                    padding: EdgeInsets.fromLTRB(8, 4, 0, 4),
+                    child: Column(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Lorem LoremLorem ipsome Lorem LoremLorem ipsome ',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: ThemeColor.subTitleColor,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 16, bottom: 4, left: 4),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: 8,
+                                width: 8,
+                                alignment: Alignment.topLeft,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.pink,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  'Meeting:',
+                                  style: TextStyle(
+                                    color: ThemeColor.titleColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 2.0),
+                                child: Text(
+                                  '10.30 am',
+                                  style: TextStyle(
+                                    color: ThemeColor.titleColor,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -210,38 +371,33 @@ class _EventScreenState extends State<EventScreen> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            _eventLabel('Categories'),
-            SizedBox(
-              height: 10,
-            ),
+            _eventLabel('Categories', 1),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildCategory(Colors.purple.withAlpha(450), Colors.pink.withAlpha(450), 'Personal'),
-                  _buildCategory(Colors.pink.withAlpha(450), Colors.red.withAlpha(450), 'Study'),
-                  _buildCategory(Colors.red.withAlpha(450), Colors.deepOrange.withAlpha(450), 'Meeting'),
-                  _buildCategory(Colors.deepOrange.withAlpha(450), Colors.orange.withAlpha(450), 'Work'),
-                  _buildCategory(Colors.orange.withAlpha(450), Colors.amber.withAlpha(450), 'Others'),
-                  SizedBox(
-                    width: 20,
-                  ),
-                ],
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildCategory(Icon(Icons.work), 'Personal'),
+                    _buildCategory(Icon(Icons.book), 'Study'),
+                    _buildCategory(Icon(Icons.timelapse), 'Meeting'),
+                    _buildCategory(Icon(Icons.work), 'Work'),
+                    _buildCategory(Icon(Icons.category), 'Others'),
+                  ],
+                ),
               ),
             ),
-            Divider(),
-            _eventLabel('Today\'s Events'),
             SizedBox(
               height: 10,
             ),
+            Divider(),
+            _eventLabel('Today\'s Events', 2),
             Expanded(
               child: ListView.builder(
                 itemCount: checkbox.length,
                 itemBuilder: (context, index) {
+                  if (index == 0) return _categoryCard('fff');
                   return _buildEventListRow(index);
                 },
               ),
@@ -252,4 +408,3 @@ class _EventScreenState extends State<EventScreen> {
     );
   }
 }
-

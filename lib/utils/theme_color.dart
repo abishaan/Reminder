@@ -12,7 +12,7 @@ class ThemeColor {
   static const Color lightPurple = Color(0xff7e57c2);
 //  static const Color primary = Color(0xff673ab7);
 //  static const Color accent = Color(0xff5e35b1);
-  static const Color darkAccent = Color(0xff512da8);
+  static const Color darkAccent = Color(0xFF333366);
 
 
 }
