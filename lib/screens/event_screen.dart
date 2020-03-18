@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:reminder/models/event_model.dart';
 import 'package:reminder/utils/theme_color.dart';
 
-class EventsScreen extends StatefulWidget {
+class EventScreen extends StatefulWidget {
   final Event events;
 
-  const EventsScreen({Key key, this.events}) : super(key: key);
+  const EventScreen({Key key, this.events}) : super(key: key);
 
   @override
-  _EventsScreenState createState() => _EventsScreenState();
+  _EventScreenState createState() => _EventScreenState();
 }
 
-class _EventsScreenState extends State<EventsScreen> {
+class _EventScreenState extends State<EventScreen> {
   List<bool> checkbox = new List<bool>();
 
   @override

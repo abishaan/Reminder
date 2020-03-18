@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:reminder/screens/calendar_screen.dart';
-import 'package:reminder/screens/events_screen.dart';
+import 'package:reminder/screens/event_screen.dart';
 import 'package:reminder/utils/theme_color.dart';
 
 void main() => runApp(ReminderApp());
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _tabItems = [
-      EventsScreen(),
+      EventScreen(),
       CalendarScreen(refresh),
       Center(child: Text('Li')),
       Center(child: Text('Settings')),
