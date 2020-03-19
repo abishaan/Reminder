@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "850170152956",
+    "firebase_url": "https://glib-3b976.firebaseio.com",
+    "project_id": "glib-3b976",
+    "storage_bucket": "glib-3b976.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850170152956:android:cfe31f3019e82974d69479",
+        "android_client_info": {
+          "package_name": "lk.sliit.reminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850170152956-627807jos3rnek096u8fa5eaise7slmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeW5S10LL-WfWGJa2M5rR_WgV40YEkEzQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850170152956-627807jos3rnek096u8fa5eaise7slmh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

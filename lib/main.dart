@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:reminder/screens/calendar_screen.dart';
-import 'package:reminder/screens/event_screen.dart';
-import 'package:reminder/utils/theme_color.dart';
+import 'package:reminder/screens/event_screen/event_screen.dart';
+import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/screens/event_screen/create_event_widget.dart';
 
 void main() => runApp(ReminderApp());
+
+var themeData = ThemeData(
+  primaryColor: ThemeColor.primaryAccent,
+  accentColor: ThemeColor.primary,
+);
 
 class ReminderApp extends StatefulWidget {
   @override
@@ -15,6 +21,7 @@ class _ReminderAppState extends State<ReminderApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: themeData,
       debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
@@ -91,8 +98,18 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(),
       floatingActionButtonLocation: _buttonLocation,
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Increment',
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => Container(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: CreateEventWidget(id: '123', isEditMode: false),
+              ),
+            ),
+          );
+        },
+        tooltip: 'Add Event',
         backgroundColor: ThemeColor.primary,
         child: Icon(Icons.add),
       ),
