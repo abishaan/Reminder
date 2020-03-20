@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/api/event_api.dart';
@@ -15,9 +16,10 @@ class CreateEventWidget extends StatefulWidget {
 }
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
+  DocumentReference _reference;
   String _eventTitle;
   String _eventDescription;
-  String _eventCategory = "work";
+  String _eventCategory;
   DateTime _eventDate;
   TimeOfDay _eventTime;
 
@@ -26,24 +28,27 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   void initState() {
     if (widget.isEditMode) {
-      _eventTitle = widget.event.title;
-      _eventDescription = widget.event.description;
-      _eventCategory = widget.event.category;
-      _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
-      _eventTime = TimeOfDay.fromDateTime(
-          DateFormat.jm().parse(widget.event.remindTime));
+    _reference = widget.event.reference;
+    _eventTitle = widget.event.title;
+    _eventDescription = widget.event.description;
+    _eventCategory = widget.event.category;
+    _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
+    _eventTime = TimeOfDay.fromDateTime(
+    DateFormat.jm().parse(widget.event.remindTime));
     }
     super.initState();
-  }
+    }
 
-  Future<DateTime> _inputRemindDate(BuildContext context) => showDatePicker(
+  Future<DateTime> _inputRemindDate(BuildContext context) =>
+      showDatePicker(
         context: context,
         firstDate: DateTime(2020),
         lastDate: DateTime(2025),
         initialDate: widget.isEditMode ? _eventDate : DateTime.now(),
       );
 
-  Future<TimeOfDay> _inputRemindTime(BuildContext context) => showTimePicker(
+  Future<TimeOfDay> _inputRemindTime(BuildContext context) =>
+      showTimePicker(
         context: context,
         initialTime: widget.isEditMode ? _eventTime : TimeOfDay.now(),
       );
@@ -55,6 +60,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       EventAPI eventAPI = new EventAPI();
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
+            reference: _reference,
             title: _eventTitle,
             description: _eventDescription,
             category: _eventCategory,
@@ -63,6 +69,8 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
         if (event != null) {
           if (widget.isEditMode) {
+            print('----------------' + widget.event.toJson().toString());
+
             eventAPI.updateEvent(event);
           } else {
             eventAPI.addEvent(event);
@@ -85,8 +93,13 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20,20,20,10),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
       child: SingleChildScrollView(
+        padding:
+        EdgeInsets.only(bottom: MediaQuery
+            .of(context)
+            .viewInsets
+            .bottom),
         child: Form(
           key: _formKey,
           child: Column(
@@ -95,12 +108,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             children: <Widget>[
               _textLabel('Title'),
               TextFormField(
-                initialValue: _eventTitle == null ? null : _eventTitle,
+                initialValue: _eventTitle != null ? _eventTitle : null,
                 decoration: InputDecoration(
                   hintText: 'Event title',
                 ),
                 validator: (value) =>
-                    value.isEmpty ? 'Please enter some text' : null,
+                value.isEmpty ? 'Please enter some text' : null,
                 onSaved: (value) {
                   _eventTitle = value;
                 },
@@ -111,12 +124,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               _textLabel('Description'),
               TextFormField(
                 initialValue:
-                    _eventDescription == null ? null : _eventDescription,
+                _eventDescription != null ? _eventDescription : null,
                 decoration: InputDecoration(
                   hintText: 'Describe your task',
                 ),
                 validator: (value) =>
-                    value.isEmpty ? 'Please enter some text' : null,
+                value.isEmpty ? 'Please enter some text' : null,
                 onSaved: (value) {
                   _eventDescription = value;
                 },
@@ -126,14 +139,14 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               ),
               _textLabel('Category'),
               TextFormField(
-                initialValue: _eventTitle == null ? null : _eventTitle,
+                initialValue: _eventCategory != null ? _eventCategory : null,
                 decoration: InputDecoration(
-                  hintText: 'Event title',
+                  hintText: 'Event category',
                 ),
                 validator: (value) =>
                 value.isEmpty ? 'Please enter some text' : null,
                 onSaved: (value) {
-                  _eventTitle = value;
+                  _eventCategory = value;
                 },
               ),
               SizedBox(
@@ -177,7 +190,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 alignment: Alignment.bottomRight,
                 child: OutlineButton(
                   child: Text(
-                    !widget.isEditMode ? 'ADD' : 'UPDATE',
+                    widget.isEditMode ? 'UPDATE' : 'ADD',
                     style: TextStyle(
                         color: ThemeColor.primaryAccent,
                         fontSize: 18,

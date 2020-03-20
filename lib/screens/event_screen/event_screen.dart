@@ -56,7 +56,7 @@ class _EventScreenState extends State<EventScreen> {
     return StreamBuilder<QuerySnapshot>(
         stream: _eventAPI.getEvents(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
+          if (!snapshot.hasData) return LinearProgressIndicator();
           return snapshot.data.documents.length > 0
               ? Expanded(
                   child: ListView(

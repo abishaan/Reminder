@@ -8,8 +8,8 @@ import 'package:reminder/screens/event_screen/create_event_widget.dart';
 void main() => runApp(ReminderApp());
 
 var themeData = ThemeData(
-  primaryColor: ThemeColor.primaryAccent,
   accentColor: ThemeColor.primary,
+  primaryColor: ThemeColor.primaryAccent,
 );
 
 class ReminderApp extends StatefulWidget {
