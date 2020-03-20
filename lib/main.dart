@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           _screenTitle,
           style: TextStyle(color: ThemeColor.primaryAccent),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         actions: <Widget>[
           _bottomNavHome
               ? PopupMenuButton(
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               : SizedBox()
         ],
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       body: _tabItems[_currentIndex],
       drawer: Drawer(),
       floatingActionButtonLocation: _buttonLocation,

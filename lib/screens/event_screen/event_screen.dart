@@ -21,37 +21,34 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: <Widget>[
-            LabelWidget('Categories', 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CategoryWidget(Icon(Icons.work), 'Personal'),
-                    CategoryWidget(Icon(Icons.book), 'Study'),
-                    CategoryWidget(Icon(Icons.timelapse), 'Meeting'),
-                    CategoryWidget(Icon(Icons.work), 'Work'),
-                    CategoryWidget(Icon(Icons.category), 'Others'),
-                  ],
-                ),
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        LabelWidget('Categories', 1),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                CategoryWidget(Icon(Icons.work), 'Personal'),
+                CategoryWidget(Icon(Icons.book), 'Study'),
+                CategoryWidget(Icon(Icons.timelapse), 'Meeting'),
+                CategoryWidget(Icon(Icons.work), 'Work'),
+                CategoryWidget(Icon(Icons.category), 'Others'),
+              ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Divider(),
-            LabelWidget('Today\'s Events', 2),
-            _buildEventList(context)
-          ],
+          ),
         ),
-      ),
+        SizedBox(
+          height: 10,
+        ),
+        Divider(),
+        LabelWidget('Today\'s Events', 2),
+        _buildEventList(context)
+      ],
     );
   }
 
