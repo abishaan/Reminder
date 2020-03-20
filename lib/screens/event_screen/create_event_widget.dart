@@ -4,12 +4,11 @@ import 'package:reminder/api/event_api.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
 
-
 class CreateEventWidget extends StatefulWidget {
-  final String id;
+  final RemindEvent event;
   final bool isEditMode;
 
-  CreateEventWidget({Key key, this.id, this.isEditMode}) : super(key: key);
+  CreateEventWidget({Key key, this.event, this.isEditMode}) : super(key: key);
 
   @override
   _CreateEventWidgetState createState() => _CreateEventWidgetState();
@@ -24,16 +23,27 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<DateTime> _inputRemindDate(BuildContext context) =>
-      showDatePicker(
+  @override
+  void initState() {
+    if (widget.isEditMode) {
+      _eventTitle = widget.event.title;
+      _eventDescription = widget.event.description;
+      _eventCategory = widget.event.category;
+      _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
+      _eventTime = TimeOfDay.fromDateTime(
+          DateFormat.jm().parse(widget.event.remindTime));
+    }
+    super.initState();
+  }
+
+  Future<DateTime> _inputRemindDate(BuildContext context) => showDatePicker(
         context: context,
         firstDate: DateTime(2020),
         lastDate: DateTime(2025),
         initialDate: widget.isEditMode ? _eventDate : DateTime.now(),
       );
 
-  Future<TimeOfDay> _inputRemindTime(BuildContext context) =>
-      showTimePicker(
+  Future<TimeOfDay> _inputRemindTime(BuildContext context) => showTimePicker(
         context: context,
         initialTime: widget.isEditMode ? _eventTime : TimeOfDay.now(),
       );
@@ -42,55 +52,79 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      RemindEvent event;
       EventAPI eventAPI = new EventAPI();
       if (_eventDate != null && _eventTime != null) {
-        event = new RemindEvent(
+        RemindEvent event = new RemindEvent(
             title: _eventTitle,
             description: _eventDescription,
             category: _eventCategory,
-            remindDate: DateFormat.yMMMd().format(_eventDate).toString(),
+            remindDate: _eventDate.toString(),
             remindTime: _eventTime.format(context).toString());
+
         if (event != null) {
-          print(event.toJson().toString());
-          eventAPI.addEvent(event);
+          if (widget.isEditMode) {
+            eventAPI.updateEvent(event);
+          } else {
+            eventAPI.addEvent(event);
+          }
         }
       }
 
-//      if (!widget.isEditMode) {
-//
-//      } else {
-//
-//      }
       Navigator.of(context).pop();
-
     }
   }
 
-  @override
-  void initState() {
-    if (widget.isEditMode) {
-//      task =
-//          Provider.of<TaskProvider>(context, listen: false).getById(widget.id);
-//      _selectedDate = task.dueDate;
-//      _selectedTime = task.dueTime;
-//      _inputDescription = task.description;
-    }
-    super.initState();
+  Widget _textLabel(String label) {
+    return Text(label,
+        style: TextStyle(
+          color: ThemeColor.darkAccent,
+          fontWeight: FontWeight.w600,
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(20,20,20,10),
       child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Text('Title', style: TextStyle(color: ThemeColor.titleColor)),
+              _textLabel('Title'),
+              TextFormField(
+                initialValue: _eventTitle == null ? null : _eventTitle,
+                decoration: InputDecoration(
+                  hintText: 'Event title',
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Please enter some text' : null,
+                onSaved: (value) {
+                  _eventTitle = value;
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              _textLabel('Description'),
+              TextFormField(
+                initialValue:
+                    _eventDescription == null ? null : _eventDescription,
+                decoration: InputDecoration(
+                  hintText: 'Describe your task',
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Please enter some text' : null,
+                onSaved: (value) {
+                  _eventDescription = value;
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              _textLabel('Category'),
               TextFormField(
                 initialValue: _eventTitle == null ? null : _eventTitle,
                 decoration: InputDecoration(
@@ -105,30 +139,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               SizedBox(
                 height: 20,
               ),
-              Text('Description',
-                  style: TextStyle(color: ThemeColor.titleColor)),
-              TextFormField(
-                initialValue:
-                _eventDescription == null ? null : _eventDescription,
-                decoration: InputDecoration(
-                  hintText: 'Describe your task',
-                ),
-                validator: (value) =>
-                value.isEmpty ? 'Please enter some text' : null,
-                onSaved: (value) {
-                  _eventDescription = value;
-                },
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text('Date of the Event',
-                  style: TextStyle(color: ThemeColor.titleColor)),
+              _textLabel('Date of the Event'),
               TextFormField(
                 onTap: () async {
                   final selectedDate = await _inputRemindDate(context);
                   setState(() {
-                    _eventDate = selectedDate ;
+                    _eventDate = selectedDate;
                   });
                 },
                 readOnly: true,
@@ -141,10 +157,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               SizedBox(
                 height: 20,
               ),
-              Text('Time of the Event',
-                  style: TextStyle(color: ThemeColor.titleColor)),
+              _textLabel('Time of the Event'),
               TextFormField(
-                onTap: () async{
+                onTap: () async {
                   final selectedTime = await _inputRemindTime(context);
                   setState(() {
                     _eventTime = selectedTime;
@@ -160,9 +175,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               Container(
                 margin: EdgeInsets.only(top: 8),
                 alignment: Alignment.bottomRight,
-                child: FlatButton(
+                child: OutlineButton(
                   child: Text(
-                    !widget.isEditMode ? 'ADD Event' : 'EDIT Event',
+                    !widget.isEditMode ? 'ADD' : 'UPDATE',
                     style: TextStyle(
                         color: ThemeColor.primaryAccent,
                         fontSize: 18,

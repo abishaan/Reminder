@@ -8,6 +8,14 @@ class EventAPI {
     return Firestore.instance.collection(eventCollection).snapshots();
   }
 
+  getEventsByDate(String date) {
+    return Firestore.instance
+        .collection(eventCollection)
+        .orderBy('remindTime')
+        .where('remindDate', isEqualTo: date)
+        .snapshots();
+  }
+
   addEvent(RemindEvent event) {
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
@@ -31,10 +39,9 @@ class EventAPI {
     }
   }
 
-  deleteEvent(RemindEvent event) {
+  deleteEvent(DocumentReference reference) {
     Firestore.instance.runTransaction((transaction) async {
-      await transaction.delete(event.reference);
+      await transaction.delete(reference);
     });
   }
 }
-

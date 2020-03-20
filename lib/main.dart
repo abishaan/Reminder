@@ -76,10 +76,10 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
-        iconTheme: IconThemeData(color: ThemeColor.titleColor),
+        iconTheme: IconThemeData(color: ThemeColor.primaryAccent),
         title: Text(
           _screenTitle,
-          style: TextStyle(color: ThemeColor.titleColor),
+          style: TextStyle(color: ThemeColor.primaryAccent),
         ),
         backgroundColor: Colors.white,
         actions: <Widget>[
@@ -100,13 +100,14 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-            context: context,
-            builder: (_) => Container(
-              child: Padding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: CreateEventWidget(id: '123', isEditMode: false),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
               ),
             ),
+            isScrollControlled: true,
+            context: context,
+            builder: (_) => CreateEventWidget(isEditMode: false),
           );
         },
         tooltip: 'Add Event',

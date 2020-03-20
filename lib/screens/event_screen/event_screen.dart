@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/api/event_api.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/category_widget.dart';
+import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:reminder/screens/event_screen/special_event_widget.dart';
 import 'package:reminder/screens/event_screen/normal_event_widget.dart';
 import 'package:reminder/screens/event_screen/label_widget.dart';
@@ -31,7 +32,7 @@ class _EventScreenState extends State<EventScreen> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     CategoryWidget(Icon(Icons.work), 'Personal'),
                     CategoryWidget(Icon(Icons.book), 'Study'),
@@ -58,24 +59,31 @@ class _EventScreenState extends State<EventScreen> {
     return StreamBuilder<QuerySnapshot>(
         stream: _eventAPI.getEvents(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-          return Expanded(
-            child: ListView(
-              children: snapshot.data.documents
-                  .asMap()
-                  .map(
-                    (index, data) => MapEntry(
-                      index,
-                      index == 0
-                          ? SpecialEventWidget(RemindEvent.fromSnapshot(data))
-                          : NormalEventWidget(
-                              index, RemindEvent.fromSnapshot(data)),
-                    ),
-                  )
-                  .values
-                  .toList(),
-            ),
-          );
+          if (!snapshot.hasData) return CircularProgressIndicator();
+          return snapshot.data.documents.length > 0
+              ? Expanded(
+                  child: ListView(
+                    children: snapshot.data.documents
+                        .asMap()
+                        .map(
+                          (index, data) => MapEntry(
+                            index,
+                            index == 0
+                                ? SpecialEventWidget(
+                                    RemindEvent.fromSnapshot(data))
+                                : NormalEventWidget(
+                                    index, RemindEvent.fromSnapshot(data)),
+                          ),
+                        )
+                        .values
+                        .toList(),
+                  ),
+                )
+              : EmptyImageWidget(
+                  title: 'You have a free day.',
+                  subtitle:
+                      'Ready for some new events? Tap + to write them down.',
+                  imagePath: 'assets/images/archive.png');
         });
   }
 }
