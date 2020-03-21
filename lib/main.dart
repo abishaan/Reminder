@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: _tabItems[_currentIndex],
       floatingActionButtonLocation: _buttonLocation,
@@ -74,7 +73,7 @@ class _HomePageState extends State<HomePage> {
             ),
             isScrollControlled: true,
             context: context,
-            builder: (_) => CreateEventWidget(isEditMode: false),
+            builder: (_) => CreateEventWidget(isEdit: false),
           );
         },
         tooltip: 'Add Event',

@@ -46,7 +46,7 @@ class SpecialEventWidget extends StatelessWidget {
                           isScrollControlled: true,
                           context: context,
                           builder: (_) => CreateEventWidget(
-                              event: remindEvent, isEditMode: true),
+                              event: remindEvent, isEdit: true),
                         );
                       },
                     ),

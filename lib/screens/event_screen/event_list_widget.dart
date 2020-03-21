@@ -14,9 +14,8 @@ class EventListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     EventAPI eventAPI = EventAPI();
-
     return Card(
-      elevation: 2,
+      elevation: 1,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side:
@@ -48,7 +47,7 @@ class EventListWidget extends StatelessWidget {
                           isScrollControlled: true,
                           context: context,
                           builder: (_) => CreateEventWidget(
-                              event: remindEvent, isEditMode: true),
+                              event: remindEvent, isEdit: true),
                         );
                       },
                     ),
