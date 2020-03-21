@@ -15,58 +15,17 @@ class LabelWidget extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 0, 12),
+            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
             child: Text(
               label,
               style: TextStyle(
                 color: ThemeColor.darkAccent,
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 16,
               ),
             ),
           ),
-          Positioned(
-            bottom: 3,
-            left: 15,
-            width: 30,
-            height: 2.5,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  stops: [0.1, 1],
-                  colors: [
-                    ThemeColor.darkAccent.withAlpha(700),
-                    ThemeColor.titleColor.withAlpha(700),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          index == 2
-              ? Positioned(
-                  bottom: 3,
-                  left: 50,
-                  width: 30,
-                  height: 2.5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        stops: [0.1, 1],
-                        colors: [
-                          ThemeColor.darkAccent.withAlpha(700),
-                          ThemeColor.titleColor.withAlpha(700),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
-              : SizedBox(),
+
         ],
       ),
     );

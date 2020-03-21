@@ -29,8 +29,6 @@ class _ReminderAppState extends State<ReminderApp> {
 }
 
 class HomePage extends StatefulWidget {
-  static const homeMenuItems = ['Manage Categories', 'Settings'];
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -43,59 +41,26 @@ class _HomePageState extends State<HomePage> {
   bool _bottomNavHome = true;
   bool _bottomNavCalender = false;
   bool _bottomNavTimer = false;
-  String _screenTitle = 'Remind Me!';
+
   List<Widget> _tabItems;
 
   @override
   void initState() {
     _tabItems = [
       EventScreen(),
-      CalendarScreen(refresh),
+      CalendarScreen(),
       Center(child: Text('Li')),
       Center(child: Text('Settings')),
     ];
     super.initState();
   }
 
-  refresh(dynamic title) {
-    setState(() {
-      _screenTitle = title;
-    });
-  }
-
-  final List<PopupMenuItem> _popupHomeMenuItems = HomePage.homeMenuItems
-      .map((value) => PopupMenuItem(
-            value: value,
-            child: Text(value),
-          ))
-      .toList();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0,
-        iconTheme: IconThemeData(color: ThemeColor.primaryAccent),
-        title: Text(
-          _screenTitle,
-          style: TextStyle(color: ThemeColor.primaryAccent),
-        ),
-        backgroundColor: Colors.grey[50],
-        actions: <Widget>[
-          _bottomNavHome
-              ? PopupMenuButton(
-                  onSelected: (value) {
-                    print(value);
-                  },
-                  itemBuilder: (BuildContext context) => _popupHomeMenuItems,
-                )
-              : SizedBox()
-        ],
-      ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: _tabItems[_currentIndex],
-      drawer: Drawer(),
       floatingActionButtonLocation: _buttonLocation,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -115,6 +80,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         shape: CircularNotchedRectangle(),
         child: Container(
           height: 50,
@@ -130,7 +96,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _screenTitle = 'Remind Me!';
                     _currentIndex = 0;
                     _bottomNavHome = true;
                     _bottomNavCalender = false;
@@ -148,7 +113,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onPressed: () {
                   setState(() {
-                    _screenTitle = 'Calendar';
                     _currentIndex = 1;
                     _bottomNavHome = false;
                     _bottomNavCalender = true;

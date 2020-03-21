@@ -4,8 +4,12 @@ import 'package:reminder/themes/theme_color.dart';
 
 class EventListWidget extends StatelessWidget {
   final RemindEvent remindEvent;
+  final Color titleColor;
+  final double titleSize;
 
-  const EventListWidget(this.remindEvent, {Key key}) : super(key: key);
+  const EventListWidget(
+      {Key key, this.remindEvent, this.titleColor, this.titleSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +22,9 @@ class EventListWidget extends StatelessWidget {
             Text(
               remindEvent.title,
               style: TextStyle(
-                  color: ThemeColor.titleColor,
+                  color: titleColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 24),
+                  fontSize: titleSize),
             ),
             Container(
               height: 12,
@@ -56,12 +60,12 @@ class EventListWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 4, left: 4),
+              padding: EdgeInsets.only(top: 16, bottom: 4),
               child: Row(
                 children: <Widget>[
                   Container(
-                    height: 8,
-                    width: 8,
+                    height: 6,
+                    width: 6,
                     alignment: Alignment.topLeft,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -71,11 +75,11 @@ class EventListWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
-                      remindEvent.category,
+                      '${remindEvent.category} at ',
                       style: TextStyle(
-                        color: ThemeColor.titleColor,
+                        color: ThemeColor.subTitleColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -84,9 +88,9 @@ class EventListWidget extends StatelessWidget {
                     child: Text(
                       remindEvent.remindTime,
                       style: TextStyle(
-                        color: ThemeColor.titleColor,
+                        color: ThemeColor.subTitleColor,
                         fontWeight: FontWeight.w700,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                   ),

@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:reminder/api/event_api.dart';
+import 'package:reminder/models/event.dart';
+import 'package:reminder/screens/event_screen/event_list_widget.dart';
+import 'package:reminder/screens/event_screen/normal_event_widget.dart';
+import 'package:reminder/screens/event_screen/special_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
-  final Function refresh;
-  CalendarScreen(this.refresh);
-
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -58,19 +62,27 @@ class _CalendarScreenState extends State<CalendarScreen>
     });
   }
 
+  tapped(DateTime dateTime) {
+    print('object' + dateTime.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            _buildTableCalendar(),
-            // _buildTableCalendarWithBuilders(),
-            const SizedBox(height: 8.0),
-            Expanded(child: _buildEventList()),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                _buildTableCalendar(),
+                // _buildTableCalendarWithBuilders(),
+                const SizedBox(height: 8.0),
+                Expanded(child: _buildEventList()),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -81,10 +93,16 @@ class _CalendarScreenState extends State<CalendarScreen>
       calendarController: _calendarController,
       events: _events,
       startingDayOfWeek: StartingDayOfWeek.monday,
-      headerVisible: false,
       onDaySelected: _onDaySelected,
       onVisibleDaysChanged: _onVisibleDaysChanged,
-      
+      headerStyle: HeaderStyle(
+          formatButtonVisible: false,
+          centerHeaderTitle: true,
+          titleTextStyle: TextStyle(
+              color: ThemeColor.darkAccent,
+              fontSize: 18,
+              fontWeight: FontWeight.w500)),
+      onHeaderTapped: tapped(DateTime.now()),
       availableCalendarFormats: const {
         CalendarFormat.month: '',
         CalendarFormat.week: '',
@@ -136,7 +154,6 @@ class _CalendarScreenState extends State<CalendarScreen>
   void _onVisibleDaysChanged(
       DateTime first, DateTime last, CalendarFormat format) {
     print('$first $last');
-    widget.refresh('hello');
   }
 
   Widget _buildEventList() {
@@ -146,96 +163,48 @@ class _CalendarScreenState extends State<CalendarScreen>
   }
 
   Widget _buildEventRow(String event) {
-    print('-----------' + event.isNotEmpty.toString());
-    return Card(
-      elevation: 2,
-      shape: Border(
-        left: BorderSide(
-          color: Colors.deepPurpleAccent,
-          width: 5,
-        ),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Container(
-        height: 120,
-        child: ListTile(
-          title: Container(
-            padding: EdgeInsets.fromLTRB(8, 4, 0, 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  event.toString(),
-                  style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                Container(
-                  height: 12,
-                  width: 12,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        spreadRadius: 4,
-                        color: ThemeColor.accent.withAlpha(700),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          subtitle: Padding(
-            padding: EdgeInsets.fromLTRB(8, 4, 0, 4),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Lorem Lorem Lorem Lorem Lorem Lorem  Lorem Lorem Lorem Lorem Lorem Lorem LoremLorem Lorem LoremLoremLorem LoremLorem',
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 8, bottom: 8, left: 4),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        height: 6,
-                        width: 6,
-                        alignment: Alignment.topLeft,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 4,
-                              color: Colors.deepPurpleAccent.withAlpha(700),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          'Meeting:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 15),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: Text(
-                          '10.30 am',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+    return NormalEventWidget(
+      0,
+      RemindEvent(
+        title: 'Appoinment',
+        description: 'at hospital',
+        category: 'personal',
+        remindTime: '5:56 PM',
+        remindDate: '',
       ),
     );
+  }
+
+  Widget _buildEventList2(BuildContext context) {
+    EventAPI _eventAPI = EventAPI();
+    return StreamBuilder<QuerySnapshot>(
+        stream: _eventAPI = EventAPI().getEvents(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return LinearProgressIndicator();
+          return snapshot.data.documents.length > 0
+              ? Expanded(
+                  child: ListView(
+                    children: snapshot.data.documents
+                        .asMap()
+                        .map(
+                          (index, data) => MapEntry(
+                            index,
+                            index == 0
+                                ? SpecialEventWidget(
+                                    RemindEvent.fromSnapshot(data))
+                                : NormalEventWidget(
+                                    index, RemindEvent.fromSnapshot(data)),
+                          ),
+                        )
+                        .values
+                        .toList(),
+                  ),
+                )
+              : EmptyImageWidget(
+                  title: 'You have a free day.',
+                  subtitle:
+                      'Ready for some new events? Tap + to write them down.',
+                  imagePath: 'assets/images/archive.png');
+        });
   }
 }

@@ -67,11 +67,11 @@ class SpecialEventWidget extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Positioned(
-                  top: 35,
+                  top: 70,
                   right: -50,
                   child: ClipRect(
                     child: CircleAvatar(
-                      backgroundColor: ThemeColor.darkAccent,
+                      backgroundColor: ThemeColor.lightPurple.withAlpha(20),
                       radius: 40,
                     ),
                   ),
@@ -92,7 +92,11 @@ class SpecialEventWidget extends StatelessWidget {
                     backgroundColor: ThemeColor.lightPurple.withAlpha(25),
                   ),
                 ),
-                EventListWidget(remindEvent)
+                EventListWidget(
+                  titleColor: ThemeColor.titleColor,
+                  titleSize: 20,
+                  remindEvent: remindEvent,
+                )
               ],
             ),
           ),
