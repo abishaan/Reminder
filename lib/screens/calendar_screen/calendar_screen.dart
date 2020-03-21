@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/api/event_api.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/event_list_widget.dart';
-import 'package:reminder/screens/event_screen/normal_event_widget.dart';
-import 'package:reminder/screens/event_screen/special_event_widget.dart';
+import 'package:reminder/screens/calendar_screen/special_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -70,6 +69,8 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
+
         body: SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -163,8 +164,7 @@ class _CalendarScreenState extends State<CalendarScreen>
   }
 
   Widget _buildEventRow(String event) {
-    return NormalEventWidget(
-      0,
+    return SpecialEventWidget(
       RemindEvent(
         title: 'Appoinment',
         description: 'at hospital',
@@ -189,11 +189,9 @@ class _CalendarScreenState extends State<CalendarScreen>
                         .map(
                           (index, data) => MapEntry(
                             index,
-                            index == 0
-                                ? SpecialEventWidget(
+                                SpecialEventWidget(
                                     RemindEvent.fromSnapshot(data))
-                                : NormalEventWidget(
-                                    index, RemindEvent.fromSnapshot(data)),
+
                           ),
                         )
                         .values

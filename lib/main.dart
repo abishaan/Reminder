@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:reminder/screens/calendar_screen.dart';
+import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
+import 'package:reminder/screens/category_screen/category_screen.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/screens/event_screen/create_event_widget.dart';
@@ -40,7 +41,8 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   bool _bottomNavHome = true;
   bool _bottomNavCalender = false;
-  bool _bottomNavTimer = false;
+  bool _bottomNavCategory = false;
+  bool _bottomNavSetting = false;
 
   List<Widget> _tabItems;
 
@@ -49,7 +51,7 @@ class _HomePageState extends State<HomePage> {
     _tabItems = [
       EventScreen(),
       CalendarScreen(),
-      Center(child: Text('Li')),
+      CategoryScreen(),
       Center(child: Text('Settings')),
     ];
     super.initState();
@@ -99,14 +101,15 @@ class _HomePageState extends State<HomePage> {
                     _currentIndex = 0;
                     _bottomNavHome = true;
                     _bottomNavCalender = false;
-                    _bottomNavTimer = false;
+                    _bottomNavCategory = false;
+                    _bottomNavSetting = false;
                   });
                 },
               ),
               IconButton(
                 icon: Icon(
                   MdiIcons.calendarClock,
-                  size: 26,
+                  size: 28,
                   color: _bottomNavCalender
                       ? ThemeColor.primary
                       : Colors.grey[300],
@@ -116,23 +119,42 @@ class _HomePageState extends State<HomePage> {
                     _currentIndex = 1;
                     _bottomNavHome = false;
                     _bottomNavCalender = true;
-                    _bottomNavTimer = false;
+                    _bottomNavCategory = false;
+                    _bottomNavSetting = false;
                   });
                 },
               ),
               IconButton(
                 icon: Icon(
-                  Icons.alarm_add,
-                  size: 30,
+                  Icons.dashboard,
+                  size: 28,
                   color:
-                      _bottomNavTimer ? ThemeColor.primary : Colors.grey[300],
+                  _bottomNavCategory ? ThemeColor.primary : Colors.grey[300],
                 ),
                 onPressed: () {
                   setState(() {
                     _currentIndex = 2;
                     _bottomNavHome = false;
                     _bottomNavCalender = false;
-                    _bottomNavTimer = true;
+                    _bottomNavCategory = true;
+                    _bottomNavSetting = false;
+                  });
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  size: 28,
+                  color:
+                  _bottomNavSetting ? ThemeColor.primary : Colors.grey[300],
+                ),
+                onPressed: () {
+                  setState(() {
+                    _currentIndex = 3;
+                    _bottomNavHome = false;
+                    _bottomNavCalender = false;
+                    _bottomNavCategory = false;
+                    _bottomNavSetting = true;
                   });
                 },
               ),
