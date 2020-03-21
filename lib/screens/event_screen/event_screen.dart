@@ -72,19 +72,22 @@ class EventScreen extends StatelessWidget {
           if (!snapshot.hasData) return LinearProgressIndicator();
           return snapshot.data.documents.length > 0
               ? ListView(
-                  children: snapshot.data.documents
-                      .asMap()
-                      .map(
-                        (index, data) => MapEntry(
-                          index,
-                          index == 0
-                              ? _upperView()
-                              : EventListWidget(
+                  children: <Widget>[
+                    _upperView(),
+                    Column(
+                      children: snapshot.data.documents
+                          .asMap()
+                          .map(
+                            (index, data) => MapEntry(
+                              index,
+                              EventListWidget(
                                   index, RemindEvent.fromSnapshot(data)),
-                        ),
-                      )
-                      .values
-                      .toList(),
+                            ),
+                          )
+                          .values
+                          .toList(),
+                    ),
+                  ],
                 )
               : ListView(
                   children: <Widget>[
