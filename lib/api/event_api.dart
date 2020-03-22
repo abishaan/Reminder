@@ -9,9 +9,9 @@ class EventAPI {
   }
 
   getEventsByDate(String date) {
+    print('---------------------------------' + date);
     return Firestore.instance
         .collection(eventCollection)
-        .orderBy('remindTime')
         .where('remindDate', isEqualTo: date)
         .snapshots();
   }

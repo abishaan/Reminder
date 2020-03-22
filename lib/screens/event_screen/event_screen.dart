@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:reminder/api/event_api.dart';
 import 'package:reminder/models/event.dart';
@@ -66,8 +67,9 @@ class EventScreen extends StatelessWidget {
   }
 
   Widget _buildEventList(BuildContext context) {
+
     return StreamBuilder<QuerySnapshot>(
-        stream: _eventAPI.getEvents(),
+        stream: _eventAPI.getEventsByDate(DateFormat("yyyy-MM-dd").parse(DateTime.now().toString()).toString()),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return LinearProgressIndicator();
           return snapshot.data.documents.length > 0

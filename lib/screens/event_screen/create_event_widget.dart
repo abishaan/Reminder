@@ -181,6 +181,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
+      print('----------------------------' + _eventDate.toString());
       EventAPI eventAPI = new EventAPI();
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
@@ -188,7 +189,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             title: _eventTitle,
             description: _eventDescription,
             category: _eventCategory,
-            remindDate: _eventDate.toString(),
+            remindDate: DateFormat("yyyy-MM-dd").parse(_eventDate.toString()).toString(),
             remindTime: _eventTime.format(context).toString());
 
         if (event != null) {
@@ -202,7 +203,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         }
       }
 
-      Navigator.of(context).pop();
+//      Navigator.of(context).pop();
     }
   }
 }

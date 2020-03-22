@@ -17,9 +17,12 @@ class EventListWidget extends StatelessWidget {
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side:
-              BorderSide(width: 3, color: ThemeColor.darkAccent.withAlpha(40))),
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          width: 3,
+          color: ThemeColor.darkAccent.withAlpha(40),
+        ),
+      ),
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
         height: 100,
@@ -127,7 +130,7 @@ class EventListWidget extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              '${remindEvent.category} at '  ,
+                              '${remindEvent.category} at ',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 15),
                             ),
