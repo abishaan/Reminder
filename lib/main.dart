@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
 import 'package:reminder/screens/category_screen/category_screen.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/screens/event_screen/create_event_widget.dart';
-import 'package:reminder/utils/test.dart';
 
 void main() => runApp(ReminderApp());
 

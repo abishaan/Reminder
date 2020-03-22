@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/special_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -22,28 +24,13 @@ class _CalendarScreenState extends State<CalendarScreen>
   AnimationController _animationController;
   CalendarController _calendarController;
   final String eventCollection = 'Events';
+  DateTime _calenderDay = DateTime.now();
 
   @override
   void initState() {
     super.initState();
 
     final _selectedDay = DateTime.now();
-
-//    RemindEvent event = RemindEvent(
-//      title: 'Appoinment 1',
-//      description: 'at hospital',
-//      category: 'personal',
-//      remindTime: '5:56 PM',
-//      remindDate: '2020-03-16 00:00:00.000',
-//    );
-//
-//    RemindEvent event2 = RemindEvent(
-//      title: 'Appoinment 2',
-//      description: 'at hosp  ital',
-//      category: 'personal',
-//      remindTime: '15:56 PM',
-//      remindDate: '2020-03-12 00:00:00.000',
-//    );
 
     _events = {DateTime.parse("2020-03-22"): widget.list ?? []};
     _selectedEvents = _events[_selectedDay] ?? [];
@@ -107,6 +94,7 @@ class _CalendarScreenState extends State<CalendarScreen>
 
   void _onDaySelected(DateTime day, List events) {
     setState(() {
+      _calenderDay = day;
       _selectedEvents = events;
     });
   }
@@ -116,19 +104,34 @@ class _CalendarScreenState extends State<CalendarScreen>
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
+        body: ListView(
+          children: <Widget>[
+            Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 _buildTableCalendar(),
-                // _buildTableCalendarWithBuilders(),
-                const SizedBox(height: 8.0),
-                Expanded(child: _buildEventList()),
+                Container(
+                  height: 20.0,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                  width: MediaQuery.of(context).size.width,
+                  color: ThemeColor.primaryAccent.withAlpha(10),
+                  child: Text(
+                    DateFormat.yMMMd().format(_calenderDay).toString(),
+                    style: TextStyle(
+                      color: ThemeColor.subTitleColor,
+                    ),
+                  ),
+                ),
+                _selectedEvents.length == 0
+                    ? EmptyImageWidget(
+                        title: 'You have a free day.',
+                        subtitle:
+                            'Ready for some new events? Tap + to write them down.',
+                        imagePath: 'assets/images/archive.png')
+                    : Expanded(child: _buildEventList())
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -14,7 +14,7 @@ class EmptyImageWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(top: 50.0),
+          padding: const EdgeInsets.only(top: 30.0),
           child: CircleAvatar(
             radius: 80,
             backgroundColor: Colors.grey.withAlpha(50),
