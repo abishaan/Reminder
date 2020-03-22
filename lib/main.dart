@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
 import 'package:reminder/screens/category_screen/category_screen.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/screens/event_screen/create_event_widget.dart';
+import 'package:reminder/utils/test.dart';
 
 void main() => runApp(ReminderApp());
 
@@ -43,18 +47,30 @@ class _HomePageState extends State<HomePage> {
   bool _bottomNavCalender = false;
   bool _bottomNavCategory = false;
   bool _bottomNavSetting = false;
+  final String eventCollection = 'Events';
+  static List<String> list = List();
 
-  List<Widget> _tabItems;
+  List<Widget> _tabItems = [
+    EventScreen(),
+    CalendarScreen(list),
+    CategoryScreen(),
+    Center(child: Text('Settings')),
+  ];
+
 
   @override
   void initState() {
-    _tabItems = [
-      EventScreen(),
-      CalendarScreen(),
-      CategoryScreen(),
-      Center(child: Text('Settings')),
-    ];
+    didChange();
     super.initState();
+  }
+
+  didChange() async {
+    final QuerySnapshot querySnapshot =
+        await Firestore.instance.collection(eventCollection).getDocuments();
+    List<DocumentSnapshot> documents = querySnapshot.documents;
+    documents
+        .forEach((data) => list.add(RemindEvent.fromSnapshot(data).toString()));
+    print('fetching data....');
   }
 
   @override
@@ -81,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomAppBar(
-        elevation: 0,
+        elevation: 3,
         shape: CircularNotchedRectangle(),
         child: Container(
           height: 50,
@@ -127,8 +143,9 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(
                   Icons.dashboard,
                   size: 28,
-                  color:
-                  _bottomNavCategory ? ThemeColor.primary : Colors.grey[300],
+                  color: _bottomNavCategory
+                      ? ThemeColor.primary
+                      : Colors.grey[300],
                 ),
                 onPressed: () {
                   setState(() {
@@ -145,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                   Icons.settings,
                   size: 28,
                   color:
-                  _bottomNavSetting ? ThemeColor.primary : Colors.grey[300],
+                      _bottomNavSetting ? ThemeColor.primary : Colors.grey[300],
                 ),
                 onPressed: () {
                   setState(() {

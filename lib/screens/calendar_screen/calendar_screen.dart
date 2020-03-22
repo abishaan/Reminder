@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:reminder/api/event_api.dart';
 import 'package:reminder/models/event.dart';
-import 'package:reminder/screens/event_screen/event_list_widget.dart';
 import 'package:reminder/screens/calendar_screen/special_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
-import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
+  final List<String> list;
+
+  CalendarScreen(this.list);
+
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -20,23 +21,31 @@ class _CalendarScreenState extends State<CalendarScreen>
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
+  final String eventCollection = 'Events';
 
   @override
   void initState() {
     super.initState();
+
     final _selectedDay = DateTime.now();
 
-    _events = {
-      _selectedDay.subtract(Duration(days: 1)): [
-        'Event A2',
-        'Event A2',
-        'Event A2',
-        'Event A2'
-      ],
-      _selectedDay: ['Event A2'],
-      _selectedDay.add(Duration(days: 1)): ['Event A2'],
-    };
+//    RemindEvent event = RemindEvent(
+//      title: 'Appoinment 1',
+//      description: 'at hospital',
+//      category: 'personal',
+//      remindTime: '5:56 PM',
+//      remindDate: '2020-03-16 00:00:00.000',
+//    );
+//
+//    RemindEvent event2 = RemindEvent(
+//      title: 'Appoinment 2',
+//      description: 'at hosp  ital',
+//      category: 'personal',
+//      remindTime: '15:56 PM',
+//      remindDate: '2020-03-12 00:00:00.000',
+//    );
 
+    _events = {DateTime.parse("2020-03-22"): widget.list ?? []};
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
 
@@ -46,6 +55,47 @@ class _CalendarScreenState extends State<CalendarScreen>
     );
 
     _animationController.forward();
+  }
+
+  Widget _buildEventList() {
+    return ListView(
+      children: _selectedEvents.map((event) => _buildEventRow(event)).toList(),
+    );
+  }
+
+  Widget _buildEventRow(String event) {
+    String title = '';
+    String description = '';
+    String category = '';
+    String remindTime = '';
+
+    List<String> eventDetails = event.split('-');
+    eventDetails.asMap().forEach((index, element) {
+      switch (index) {
+        case 0:
+          title = element;
+          break;
+        case 1:
+          description = element;
+          break;
+        case 2:
+          category = element;
+          break;
+        case 3:
+          remindTime = element;
+          break;
+      }
+    });
+
+    return SpecialEventWidget(
+      RemindEvent(
+        title: title,
+        description: description,
+        category: category,
+        remindTime: remindTime,
+        remindDate: '',
+      ),
+    );
   }
 
   @override
@@ -61,16 +111,11 @@ class _CalendarScreenState extends State<CalendarScreen>
     });
   }
 
-  tapped(DateTime dateTime) {
-    print('object' + dateTime.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-
         body: SingleChildScrollView(
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -95,7 +140,6 @@ class _CalendarScreenState extends State<CalendarScreen>
       events: _events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       onDaySelected: _onDaySelected,
-      onVisibleDaysChanged: _onVisibleDaysChanged,
       headerStyle: HeaderStyle(
           formatButtonVisible: false,
           centerHeaderTitle: true,
@@ -103,7 +147,6 @@ class _CalendarScreenState extends State<CalendarScreen>
               color: ThemeColor.darkAccent,
               fontSize: 18,
               fontWeight: FontWeight.w500)),
-      onHeaderTapped: tapped(DateTime.now()),
       availableCalendarFormats: const {
         CalendarFormat.month: '',
         CalendarFormat.week: '',
@@ -150,59 +193,5 @@ class _CalendarScreenState extends State<CalendarScreen>
         },
       ),
     );
-  }
-
-  void _onVisibleDaysChanged(
-      DateTime first, DateTime last, CalendarFormat format) {
-    print('$first $last');
-  }
-
-  Widget _buildEventList() {
-    return ListView(
-      children: _selectedEvents.map((event) => _buildEventRow(event)).toList(),
-    );
-  }
-
-  Widget _buildEventRow(String event) {
-    return SpecialEventWidget(
-      RemindEvent(
-        title: 'Appoinment',
-        description: 'at hospital',
-        category: 'personal',
-        remindTime: '5:56 PM',
-        remindDate: '',
-      ),
-    );
-  }
-
-  Widget _buildEventList2(BuildContext context) {
-    EventAPI _eventAPI = EventAPI();
-    return StreamBuilder<QuerySnapshot>(
-        stream: _eventAPI = EventAPI().getEvents(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-          return snapshot.data.documents.length > 0
-              ? Expanded(
-                  child: ListView(
-                    children: snapshot.data.documents
-                        .asMap()
-                        .map(
-                          (index, data) => MapEntry(
-                            index,
-                                SpecialEventWidget(
-                                    RemindEvent.fromSnapshot(data))
-
-                          ),
-                        )
-                        .values
-                        .toList(),
-                  ),
-                )
-              : EmptyImageWidget(
-                  title: 'You have a free day.',
-                  subtitle:
-                      'Ready for some new events? Tap + to write them down.',
-                  imagePath: 'assets/images/archive.png');
-        });
   }
 }

@@ -39,12 +39,45 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     super.initState();
   }
 
-  Widget _formHeading(String label) {
-    return Text(label,
-        style: TextStyle(
-          color: ThemeColor.darkAccent,
-          fontWeight: FontWeight.w600,
-        ));
+  Future<DateTime> _inputRemindDate(BuildContext context) => showDatePicker(
+        context: context,
+        firstDate: DateTime(2020),
+        lastDate: DateTime(2025),
+        initialDate: widget.isEdit ? _eventDate : DateTime.now(),
+      );
+
+  Future<TimeOfDay> _inputRemindTime(BuildContext context) => showTimePicker(
+        context: context,
+        initialTime: widget.isEdit ? _eventTime : TimeOfDay.now(),
+      );
+
+  void _validateForm() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+
+      EventAPI eventAPI = new EventAPI();
+      if (_eventDate != null && _eventTime != null) {
+        RemindEvent event = new RemindEvent(
+            reference: _reference,
+            title: _eventTitle,
+            description: _eventDescription,
+            category: _eventCategory,
+            remindDate: DateFormat("yyyy-MM-dd")
+                .parse(_eventDate.toString())
+                .toString(),
+            remindTime: _eventTime.format(context).toString());
+
+        if (event != null) {
+          if (widget.isEdit) {
+            eventAPI.updateEvent(event);
+          } else {
+            eventAPI.addEvent(event);
+          }
+        }
+      }
+
+//      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -53,7 +86,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
       child: SingleChildScrollView(
         padding:
-        EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Form(
           key: _formKey,
           child: Column(
@@ -69,7 +102,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     hintText: 'Enter event title',
                   ),
                   validator: (value) =>
-                  value.isEmpty ? 'Please enter event title' : null,
+                      value.isEmpty ? 'Please enter event title' : null,
                   onSaved: (value) {
                     _eventTitle = value;
                   },
@@ -80,12 +113,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
                   initialValue:
-                  _eventDescription != null ? _eventDescription : null,
+                      _eventDescription != null ? _eventDescription : null,
                   decoration: InputDecoration(
                     hintText: 'Enter event description',
                   ),
                   validator: (value) =>
-                  value.isEmpty ? 'Please enter event description' : null,
+                      value.isEmpty ? 'Please enter event description' : null,
                   onSaved: (value) {
                     _eventDescription = value;
                   },
@@ -100,7 +133,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                     hintText: 'Event category',
                   ),
                   validator: (value) =>
-                  value.isEmpty ? 'Please enter some text' : null,
+                      value.isEmpty ? 'Please enter some text' : null,
                   onSaved: (value) {
                     _eventCategory = value;
                   },
@@ -165,45 +198,11 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     );
   }
 
-  Future<DateTime> _inputRemindDate(BuildContext context) => showDatePicker(
-    context: context,
-    firstDate: DateTime(2020),
-    lastDate: DateTime(2025),
-    initialDate: widget.isEdit ? _eventDate : DateTime.now(),
-  );
-
-  Future<TimeOfDay> _inputRemindTime(BuildContext context) => showTimePicker(
-    context: context,
-    initialTime: widget.isEdit ? _eventTime : TimeOfDay.now(),
-  );
-
-  void _validateForm() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-
-      print('----------------------------' + _eventDate.toString());
-      EventAPI eventAPI = new EventAPI();
-      if (_eventDate != null && _eventTime != null) {
-        RemindEvent event = new RemindEvent(
-            reference: _reference,
-            title: _eventTitle,
-            description: _eventDescription,
-            category: _eventCategory,
-            remindDate: DateFormat("yyyy-MM-dd").parse(_eventDate.toString()).toString(),
-            remindTime: _eventTime.format(context).toString());
-
-        if (event != null) {
-          if (widget.isEdit) {
-            print('----------------' + widget.event.toJson().toString());
-
-            eventAPI.updateEvent(event);
-          } else {
-            eventAPI.addEvent(event);
-          }
-        }
-      }
-
-//      Navigator.of(context).pop();
-    }
+  Widget _formHeading(String label) {
+    return Text(label,
+        style: TextStyle(
+          color: ThemeColor.darkAccent,
+          fontWeight: FontWeight.w600,
+        ));
   }
 }

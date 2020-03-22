@@ -9,7 +9,6 @@ class EventAPI {
   }
 
   getEventsByDate(String date) {
-    print('---------------------------------' + date);
     return Firestore.instance
         .collection(eventCollection)
         .where('remindDate', isEqualTo: date)

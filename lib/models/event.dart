@@ -9,14 +9,13 @@ class RemindEvent {
 
   DocumentReference reference;
 
-  RemindEvent({
-    this.title,
-    this.description,
-    this.category,
-    this.remindDate,
-    this.remindTime,
-    this.reference
-  });
+  RemindEvent(
+      {this.title,
+      this.description,
+      this.category,
+      this.remindDate,
+      this.remindTime,
+      this.reference});
 
   RemindEvent.fromMap(Map<String, dynamic> map, {this.reference})
       : title = map['title'],
@@ -36,5 +35,16 @@ class RemindEvent {
       'remindDate': remindDate,
       'remindTime': remindTime
     };
+  }
+
+  @override
+  String toString() {
+    return title +
+        '-' +
+        description +
+        '-' +
+        category +
+        '-' +
+        remindTime;
   }
 }
