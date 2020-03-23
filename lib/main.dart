@@ -46,15 +46,15 @@ class _HomePageState extends State<HomePage> {
   bool _bottomNavCategory = false;
   bool _bottomNavSetting = false;
   final String eventCollection = 'Events';
-  static List<String> list = List();
+  static Map<DateTime, List<String>> mapList = Map();
+  static List<String> eventList = List();
 
   List<Widget> _tabItems = [
     EventScreen(),
-    CalendarScreen(list),
+    CalendarScreen(mapList),
     CategoryScreen(),
     Center(child: Text('Settings')),
   ];
-
 
   @override
   void initState() {
@@ -66,10 +66,12 @@ class _HomePageState extends State<HomePage> {
     final QuerySnapshot querySnapshot =
         await Firestore.instance.collection(eventCollection).getDocuments();
     List<DocumentSnapshot> documents = querySnapshot.documents;
-    documents
-        .forEach((data) => list.add(RemindEvent.fromSnapshot(data).toString()));
-
-    if(list != null) print('Data fetched successfully...');
+    documents.forEach((data) {
+      RemindEvent event = RemindEvent.fromSnapshot(data);
+      eventList.add(event.toString());
+      mapList[DateTime.parse(event.remindDate)] = eventList;
+    });
+    if (mapList != null) print('Data fetched successfully...');
   }
 
   @override

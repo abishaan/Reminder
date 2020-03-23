@@ -1,36 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_event_widget.dart';
+import 'package:reminder/screens/calendar_screen/calendar_style.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
-  final List<String> list;
+  final Map<DateTime, List<String>> mapList;
 
-  CalendarScreen(this.list);
+  CalendarScreen(this.mapList, {Key key}) : super(key: key);
 
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  Map<DateTime, List> _events;
-  List _selectedEvents;
+  Map<DateTime, List<String>> _events = new Map();
+  List<String> _selectedEvents;
   CalendarController _calendarController;
-  final String eventCollection = 'Events';
+  DateTime _selectedDay = DateTime.now();
   DateTime _calenderDay = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-
-    final _selectedDay = DateTime.now();
-
-    _events = {DateTime.parse("2020-03-22"): widget.list ?? []};
+    widget.mapList.forEach((date, dateList) => _events[date] = dateList ?? []);
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
   }
@@ -96,7 +93,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       child: Scaffold(
           backgroundColor: Colors.white,
           body: ListView(
-            shrinkWrap: true,
             children: <Widget>[
               _buildTableCalendar(),
               Container(
@@ -131,58 +127,43 @@ class _CalendarScreenState extends State<CalendarScreen> {
       events: _events,
       startingDayOfWeek: StartingDayOfWeek.monday,
       onDaySelected: _onDaySelected,
-      headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          centerHeaderTitle: true,
-          titleTextStyle: TextStyle(
-              color: ThemeColor.darkAccent,
-              fontSize: 18,
-              fontWeight: FontWeight.w500)),
-      availableCalendarFormats: const {
-        CalendarFormat.month: '',
-        CalendarFormat.week: '',
-      },
+      headerStyle: calendarHeaderStyle,
+      availableCalendarFormats: calendarFormats,
       rowHeight: 50,
-      daysOfWeekStyle: DaysOfWeekStyle(
-        weekdayStyle: TextStyle(fontSize: 13),
-        weekendStyle: TextStyle(color: Colors.red.withAlpha(200), fontSize: 13),
-      ),
-      calendarStyle: CalendarStyle(
-        weekendStyle: TextStyle(color: Colors.black),
-        selectedColor: ThemeColor.primary.withAlpha(500),
-        todayColor: ThemeColor.primary.withAlpha(50),
-        outsideDaysVisible: true,
-      ),
+      daysOfWeekStyle: calendarWeekStyle,
+      calendarStyle: calendarStyle,
       builders: CalendarBuilders(
         markersBuilder: (context, date, events, holidays) {
-          return <Widget>[
-            events.isNotEmpty
-                ? Positioned(
-                    right: _calendarController.isSelected(date) ? 1 : null,
-                    bottom: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _calendarController.isSelected(date)
-                              ? ThemeColor.primaryAccent
-                              : ThemeColor.accent),
-                      width: 15.0,
-                      height: 15.0,
-                      child: Center(
-                        child: Text(
-                          '${events.length}',
-                          style: TextStyle().copyWith(
-                            color: Colors.white,
-                            fontSize: 10.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : SizedBox()
-          ];
+          return <Widget>[_calendarIndicator(date, events)];
         },
       ),
     );
+  }
+
+  Widget _calendarIndicator(DateTime date, List<dynamic> events) {
+    return events.isNotEmpty
+        ? Positioned(
+            right: _calendarController.isSelected(date) ? 1 : null,
+            bottom: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _calendarController.isSelected(date)
+                      ? ThemeColor.primaryAccent
+                      : ThemeColor.accent),
+              width: 15.0,
+              height: 15.0,
+              child: Center(
+                child: Text(
+                  '${events.length}',
+                  style: TextStyle().copyWith(
+                    color: Colors.white,
+                    fontSize: 10.0,
+                  ),
+                ),
+              ),
+            ),
+          )
+        : SizedBox();
   }
 }
