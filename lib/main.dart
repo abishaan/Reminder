@@ -76,8 +76,8 @@ class _HomePageState extends State<HomePage> {
       dates.add(event.remindDate);
     });
 
-    dates.forEach((data) {
-      mapList[DateTime.parse(data)] = _filterEvent(data) ?? [];
+    dates.forEach((date) {
+      mapList[DateTime.parse(date)] = _filterEvent(date) ?? [];
     });
 
     if (mapList != null) print('Data fetched successfully...');

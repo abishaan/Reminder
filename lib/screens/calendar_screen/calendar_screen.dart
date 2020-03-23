@@ -19,16 +19,18 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   Map<DateTime, List<String>> _events = new Map();
-  List<String> _selectedEvents;
+  List _selectedEvents;
   CalendarController _calendarController;
-  DateTime _selectedDay = DateTime.now();
   DateTime _calenderDay = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     widget.mapList.forEach((date, dateList) => _events[date] = dateList ?? []);
-    _selectedEvents = _events[_selectedDay] ?? [];
+    _selectedEvents = _events[DateTime.parse(DateFormat("yyyy-MM-dd")
+            .parse(_calenderDay.toString())
+            .toString())] ??
+        [];
     _calendarController = CalendarController();
   }
 
