@@ -76,7 +76,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         }
       }
 
-//      Navigator.of(context).pop();
+      Navigator.of(context).pop();
     }
   }
 
