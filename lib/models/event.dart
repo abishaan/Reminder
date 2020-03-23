@@ -45,6 +45,6 @@ class RemindEvent {
         '-' +
         category +
         '-' +
-        remindTime;
+        remindTime + '-' + remindDate;
   }
 }

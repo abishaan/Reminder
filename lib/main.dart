@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -47,7 +49,9 @@ class _HomePageState extends State<HomePage> {
   bool _bottomNavSetting = false;
   final String eventCollection = 'Events';
   static Map<DateTime, List<String>> mapList = Map();
-  static List<String> eventList = List();
+  static List<RemindEvent> eventList = List();
+  Map<DateTime, List<String>> tempList = Map();
+  HashSet<String> dates = HashSet();
 
   List<Widget> _tabItems = [
     EventScreen(),
@@ -64,14 +68,27 @@ class _HomePageState extends State<HomePage> {
 
   didChange() async {
     final QuerySnapshot querySnapshot =
-        await Firestore.instance.collection(eventCollection).getDocuments();
+    await Firestore.instance.collection(eventCollection).getDocuments();
     List<DocumentSnapshot> documents = querySnapshot.documents;
     documents.forEach((data) {
       RemindEvent event = RemindEvent.fromSnapshot(data);
-      eventList.add(event.toString());
-      mapList[DateTime.parse(event.remindDate)] = eventList;
+      eventList.add(event);
+      dates.add(event.remindDate);
     });
+
+    dates.forEach((data) {
+      mapList[DateTime.parse(data)] = _filterEvent(data) ?? [];
+    });
+
     if (mapList != null) print('Data fetched successfully...');
+  }
+
+  List<String> _filterEvent(String date) {
+    List<RemindEvent> tempEventList = eventList.where((i) =>
+    i.remindDate == date).toList();
+    List<String> filteredList = List();
+    tempEventList.forEach((event) => filteredList.add(event.toString()));
+    return filteredList;
   }
 
   @override
@@ -163,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   Icons.settings,
                   size: 28,
                   color:
-                      _bottomNavSetting ? ThemeColor.primary : Colors.grey[300],
+                  _bottomNavSetting ? ThemeColor.primary : Colors.grey[300],
                 ),
                 onPressed: () {
                   setState(() {
