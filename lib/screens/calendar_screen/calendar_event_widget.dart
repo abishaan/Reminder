@@ -4,10 +4,10 @@ import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/create_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 
-class SpecialEventWidget extends StatelessWidget {
+class CalendarEventWidget extends StatelessWidget {
   final RemindEvent remindEvent;
 
-  const SpecialEventWidget(this.remindEvent, {Key key}) : super(key: key);
+  const CalendarEventWidget(this.remindEvent, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

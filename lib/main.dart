@@ -68,7 +68,8 @@ class _HomePageState extends State<HomePage> {
     List<DocumentSnapshot> documents = querySnapshot.documents;
     documents
         .forEach((data) => list.add(RemindEvent.fromSnapshot(data).toString()));
-    print('fetching data....');
+
+    if(list != null) print('Data fetched successfully...');
   }
 
   @override

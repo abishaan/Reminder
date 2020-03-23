@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/models/event.dart';
-import 'package:reminder/screens/calendar_screen/special_event_widget.dart';
+import 'package:reminder/screens/calendar_screen/calendar_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/widgets/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -17,11 +17,9 @@ class CalendarScreen extends StatefulWidget {
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen>
-    with TickerProviderStateMixin {
+class _CalendarScreenState extends State<CalendarScreen> {
   Map<DateTime, List> _events;
   List _selectedEvents;
-  AnimationController _animationController;
   CalendarController _calendarController;
   final String eventCollection = 'Events';
   DateTime _calenderDay = DateTime.now();
@@ -35,17 +33,11 @@ class _CalendarScreenState extends State<CalendarScreen>
     _events = {DateTime.parse("2020-03-22"): widget.list ?? []};
     _selectedEvents = _events[_selectedDay] ?? [];
     _calendarController = CalendarController();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-    );
-
-    _animationController.forward();
   }
 
   Widget _buildEventList() {
-    return ListView(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: _selectedEvents.map((event) => _buildEventRow(event)).toList(),
     );
   }
@@ -74,7 +66,7 @@ class _CalendarScreenState extends State<CalendarScreen>
       }
     });
 
-    return SpecialEventWidget(
+    return CalendarEventWidget(
       RemindEvent(
         title: title,
         description: description,
@@ -87,7 +79,6 @@ class _CalendarScreenState extends State<CalendarScreen>
 
   @override
   void dispose() {
-    _animationController.dispose();
     _calendarController.dispose();
     super.dispose();
   }
@@ -103,37 +94,34 @@ class _CalendarScreenState extends State<CalendarScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
-        body: ListView(
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                _buildTableCalendar(),
-                Container(
-                  height: 20.0,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                  width: MediaQuery.of(context).size.width,
-                  color: ThemeColor.primaryAccent.withAlpha(10),
-                  child: Text(
-                    DateFormat.yMMMd().format(_calenderDay).toString(),
-                    style: TextStyle(
-                      color: ThemeColor.subTitleColor,
-                    ),
+          backgroundColor: Colors.white,
+          body: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              _buildTableCalendar(),
+              Container(
+                height: 20.0,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                width: MediaQuery.of(context).size.width,
+                color: ThemeColor.primaryAccent.withAlpha(10),
+                child: Text(
+                  DateFormat.yMMMd().format(_calenderDay).toString(),
+                  style: TextStyle(
+                    color: ThemeColor.subTitleColor,
                   ),
                 ),
-                _selectedEvents.length == 0
-                    ? EmptyImageWidget(
-                        title: 'You have a free day.',
-                        subtitle:
-                            'Ready for some new events? Tap + to write them down.',
-                        imagePath: 'assets/images/archive.png')
-                    : Expanded(child: _buildEventList())
-              ],
-            ),
-          ],
-        ),
-      ),
+              ),
+              _selectedEvents.length == 0
+                  ? EmptyImageWidget(
+                      title: 'You have a free day.',
+                      subtitle:
+                          'Ready for some new events? Tap + to write them down.',
+                      imagePath: 'assets/images/archive.png',
+                      topPadding: 30.0,
+                    )
+                  : _buildEventList(),
+            ],
+          )),
     );
   }
 
