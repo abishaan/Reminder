@@ -10,6 +10,43 @@ class EventCard extends StatelessWidget {
 
   const EventCard({Key key, this.index, this.remindEvent}) : super(key: key);
 
+  _showBottomSheet(BuildContext context) {
+    showDialog<String>(
+      context: context,
+      builder: (_) => SimpleDialog(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Edit'),
+            onTap: () {
+              Navigator.pop(context);
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                  ),
+                ),
+                isScrollControlled: true,
+                context: context,
+                builder: (_) =>
+                    CreateEventWidget(event: remindEvent, isEdit: true),
+              );
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.delete),
+            title: Text('Delete'),
+            onTap: () {
+              EventService().deleteEvent(remindEvent.reference);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(

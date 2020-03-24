@@ -9,10 +9,6 @@ class EventService {
       .document(Constants.uid)
       .collection(Constants.eventCollection);
 
-  Future<QuerySnapshot> getAllEventDocuments() {
-    return _collectionReference.getDocuments();
-  }
-
   Stream<List<RemindEvent>> getAllEvents() {
     return _collectionReference.snapshots().map(_eventListFormSnapshot);
   }

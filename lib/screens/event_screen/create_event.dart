@@ -16,14 +16,22 @@ class CreateEventWidget extends StatefulWidget {
 }
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
+  final _formKey = GlobalKey<FormState>();
+  final List<String> _categories = [
+    'Personal',
+    'Study',
+    'Work',
+    'Appoinment',
+    'Other'
+  ];
+
+  //form values
   DocumentReference _reference;
   String _eventTitle;
   String _eventDescription;
   String _eventCategory;
   DateTime _eventDate;
   TimeOfDay _eventTime;
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -53,7 +61,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   void _validateForm() {
     if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+//      _formKey.currentState.save();
 
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
@@ -79,6 +87,14 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     }
   }
 
+  Widget _formHeading(String label) {
+    return Text(label,
+        style: TextStyle(
+          color: ThemeColor.darkAccent,
+          fontWeight: FontWeight.w600,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,9 +118,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                   validator: (value) =>
                       value.isEmpty ? 'Please enter event title' : null,
-                  onSaved: (value) {
-                    _eventTitle = value;
-                  },
+                  onChanged: (value) => setState(() => _eventTitle = value),
                 ),
               ),
               _formHeading('Description'),
@@ -118,24 +132,26 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                   validator: (value) =>
                       value.isEmpty ? 'Please enter event description' : null,
-                  onSaved: (value) {
-                    _eventDescription = value;
-                  },
+                  onChanged: (value) =>
+                      setState(() => _eventDescription = value),
                 ),
               ),
               _formHeading('Category'),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  initialValue: _eventCategory != null ? _eventCategory : null,
+                child: DropdownButtonFormField(
+                  items: _categories
+                      .map((category) => DropdownMenuItem(
+                            value: category,
+                            child: Text('$category'),
+                          ))
+                      .toList(),
                   decoration: InputDecoration(
                     hintText: 'Event category',
                   ),
                   validator: (value) =>
                       value.isEmpty ? 'Please enter some text' : null,
-                  onSaved: (value) {
-                    _eventCategory = value;
-                  },
+                  onChanged: (value) => setState(() => _eventCategory = value),
                 ),
               ),
               _formHeading('Remind date'),
@@ -195,13 +211,5 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         ),
       ),
     );
-  }
-
-  Widget _formHeading(String label) {
-    return Text(label,
-        style: TextStyle(
-          color: ThemeColor.darkAccent,
-          fontWeight: FontWeight.w600,
-        ));
   }
 }
