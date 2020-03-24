@@ -5,8 +5,8 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/event_list_widget.dart';
+import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
-import 'package:reminder/widgets/empty_image_widget.dart';
 
 class EventScreen extends StatelessWidget {
   @override

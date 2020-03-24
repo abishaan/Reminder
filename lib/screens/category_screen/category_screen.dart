@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/screens/category_screen/category_widget.dart';
-import 'package:reminder/widgets/label_widget.dart';
+import 'package:reminder/shared/label_widget.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
