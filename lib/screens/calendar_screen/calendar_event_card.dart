@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/models/event.dart';
-import 'package:reminder/screens/event_screen/create_event_widget.dart';
+import 'package:reminder/screens/event_screen/create_event.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/themes/theme_color.dart';
 
-class CalendarEventWidget extends StatelessWidget {
+class CalendarEventCard extends StatelessWidget {
   final RemindEvent remindEvent;
 
-  const CalendarEventWidget(this.remindEvent, {Key key}) : super(key: key);
+  const CalendarEventCard(this.remindEvent, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class CalendarEventWidget extends StatelessWidget {
                       leading: Icon(Icons.delete),
                       title: Text('Delete'),
                       onTap: () {
-                        EventService(uid:'').deleteEvent(remindEvent.reference);
+                        EventService().deleteEvent(remindEvent.reference);
                         Navigator.pop(context);
                       },
                     ),

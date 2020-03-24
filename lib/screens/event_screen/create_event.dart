@@ -53,6 +53,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   void _validateForm() {
     if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
 
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
@@ -67,9 +68,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
         if (event != null) {
           if (widget.isEdit) {
-            EventService(uid:'').updateEvent(event);
+            EventService().updateEvent(event);
           } else {
-            EventService(uid:'').addEvent(event);
+            EventService().addEvent(event);
           }
         }
       }
@@ -137,7 +138,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   },
                 ),
               ),
-              _formHeading('Date of the Event'),
+              _formHeading('Remind date'),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
@@ -155,7 +156,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                 ),
               ),
-              _formHeading('Time of the Event'),
+              _formHeading('Remind time'),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(

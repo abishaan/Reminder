@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
-import 'package:reminder/screens/event_screen/create_event_widget.dart';
+import 'package:reminder/screens/event_screen/create_event.dart';
 import 'package:reminder/themes/theme_color.dart';
 
-class EventListWidget extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final int index;
   final RemindEvent remindEvent;
 
-  const EventListWidget(this.index, this.remindEvent, {Key key})
-      : super(key: key);
+  const EventCard({Key key, this.index, this.remindEvent}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class EventListWidget extends StatelessWidget {
                       leading: Icon(Icons.delete),
                       title: Text('Delete'),
                       onTap: () {
-                        EventService(uid:'').deleteEvent(remindEvent.reference);
+                        EventService().deleteEvent(remindEvent.reference);
                         Navigator.pop(context);
                       },
                     ),
@@ -129,7 +128,9 @@ class EventListWidget extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              '${remindEvent.category} at ',
+                              remindEvent.category != ''
+                                  ? '${remindEvent.category} at '
+                                  : '',
                               style: TextStyle(
                                   fontWeight: FontWeight.w700, fontSize: 15),
                             ),

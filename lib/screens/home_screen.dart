@@ -1,11 +1,14 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
 import 'package:reminder/screens/category_screen/category_screen.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
+import 'package:reminder/services/event_service.dart';
 import 'package:reminder/themes/theme_color.dart';
-import 'package:reminder/screens/event_screen/create_event_widget.dart';
+import 'package:reminder/screens/event_screen/create_event.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,7 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<Widget> _tabItems = [
       EventScreen(),
-      CalendarScreen(data['calendarEventList']),
+      StreamProvider<List<RemindEvent>>.value(
+        value: EventService().getAllEvents(),
+        child: CalendarScreen(),
+      ),
       CategoryScreen(),
       Center(child: Text('Settings')),
     ];

@@ -2,18 +2,18 @@ import 'dart:collection';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:reminder/models/event.dart';
+import 'package:reminder/services/event_service.dart';
 
 class EventProvider extends ChangeNotifier {
-  final String eventCollection = 'Events';
   Map<DateTime, List<String>> mapList = Map();
   List<RemindEvent> eventList = List();
   HashSet<String> dates = HashSet();
 
   Future<void> getCalendarEvents() async {
     try {
-      final QuerySnapshot querySnapshot =
-          await Firestore.instance.collection(eventCollection).getDocuments();
-      List<DocumentSnapshot> documents = querySnapshot.documents;
+      final QuerySnapshot snapshot =
+          await EventService().getAllEventDocuments();
+      List<DocumentSnapshot> documents = snapshot.documents;
 
       await Future.delayed(Duration(seconds: 0), () {
         documents.forEach((data) {

@@ -18,11 +18,11 @@ class RemindEvent {
       this.reference});
 
   RemindEvent.fromMap(Map<String, dynamic> map, {this.reference})
-      : title = map['title'],
-        description = map['description'],
-        category = map['category'],
-        remindDate = map['remindDate'],
-        remindTime = map['remindTime'];
+      : title = map['title'] ?? '',
+        description = map['description'] ?? '',
+        category = map['category'] ?? '',
+        remindDate = map['remindDate'] ?? '',
+        remindTime = map['remindTime'] ?? '';
 
   RemindEvent.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);

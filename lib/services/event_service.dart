@@ -1,26 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:reminder/models/event.dart';
+import 'package:reminder/utils/constants.dart';
 
 class EventService {
-  final String uid;
+  final CollectionReference _collectionReference = Firestore.instance
+      .collection(Constants.userCollection)
+      .document(Constants.uid)
+      .collection(Constants.eventCollection);
 
-  EventService({this.uid});
-
-  final CollectionReference eventCollection =
-      Firestore.instance.collection('Events');
-
-  getEvents() {
-    return eventCollection.snapshots();
+  Future<QuerySnapshot> getAllEventDocuments() {
+    return _collectionReference.getDocuments();
   }
 
-  getEventsByDate(String date) {
-    return eventCollection.where('remindDate', isEqualTo: date).snapshots();
+  Stream<List<RemindEvent>> getAllEvents() {
+    return _collectionReference.snapshots().map(_eventListFormSnapshot);
+  }
+
+  Stream<QuerySnapshot> getEventsByDate() {
+    return _collectionReference
+        .where('remindDate',
+            isEqualTo: DateFormat("yyyy-MM-dd")
+                .parse(DateTime.now().toString())
+                .toString())
+        .snapshots();
+  }
+
+  List<RemindEvent> _eventListFormSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents
+        .map((document) => RemindEvent(
+            title: document.data['title'] ?? '',
+            description: document.data['description'] ?? '',
+            category: document.data['category'] ?? '',
+            remindDate: document.data['remindDate'] ?? '',
+            remindTime: document.data['remindTime'] ?? ''))
+        .toList();
   }
 
   addEvent(RemindEvent event) {
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
-        await eventCollection.document().setData(event.toJson());
+        await _collectionReference.document().setData(event.toJson());
       });
     } catch (e) {
       print('Error: ${e.toString()}');
