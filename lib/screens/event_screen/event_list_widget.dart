@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/api/event_api.dart';
+import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/create_event_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
@@ -13,7 +13,6 @@ class EventListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EventAPI eventAPI = EventAPI();
     return Card(
       elevation: 1,
       shape: RoundedRectangleBorder(
@@ -59,7 +58,7 @@ class EventListWidget extends StatelessWidget {
                       leading: Icon(Icons.delete),
                       title: Text('Delete'),
                       onTap: () {
-                        eventAPI.deleteEvent(remindEvent.reference);
+                        EventService(uid:'').deleteEvent(remindEvent.reference);
                         Navigator.pop(context);
                       },
                     ),

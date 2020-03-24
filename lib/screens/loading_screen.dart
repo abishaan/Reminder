@@ -28,7 +28,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ThemeColor.primaryAccent,
-      body: SpinKitRotatingCircle(
+      body: SpinKitFadingCube(
         color: Colors.white,
         size: 50.0,
       ),

@@ -1,27 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:reminder/models/event.dart';
 
-class EventAPI {
-  final String eventCollection = 'Events';
+class EventService {
+  final String uid;
+
+  EventService({this.uid});
+
+  final CollectionReference eventCollection =
+      Firestore.instance.collection('Events');
 
   getEvents() {
-    return Firestore.instance.collection(eventCollection).snapshots();
+    return eventCollection.snapshots();
   }
 
   getEventsByDate(String date) {
-    return Firestore.instance
-        .collection(eventCollection)
-        .where('remindDate', isEqualTo: date)
-        .snapshots();
+    return eventCollection.where('remindDate', isEqualTo: date).snapshots();
   }
 
   addEvent(RemindEvent event) {
     try {
       Firestore.instance.runTransaction((Transaction transaction) async {
-        await Firestore.instance
-            .collection(eventCollection)
-            .document()
-            .setData(event.toJson());
+        await eventCollection.document().setData(event.toJson());
       });
     } catch (e) {
       print('Error: ${e.toString()}');

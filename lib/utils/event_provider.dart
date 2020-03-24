@@ -15,23 +15,19 @@ class EventProvider extends ChangeNotifier {
           await Firestore.instance.collection(eventCollection).getDocuments();
       List<DocumentSnapshot> documents = querySnapshot.documents;
 
-      await Future.delayed(Duration(seconds: 0), (){
+      await Future.delayed(Duration(seconds: 0), () {
         documents.forEach((data) {
           RemindEvent event = RemindEvent.fromSnapshot(data);
           eventList.add(event);
           dates.add(event.remindDate);
         });
-      }
-      );
+      });
 
-      await Future.delayed(Duration(seconds: 0), (){
-
+      await Future.delayed(Duration(seconds: 0), () {
         dates.forEach((date) {
           mapList[DateTime.parse(date)] = _filterEvent(date) ?? [];
         });
-      }
-      );
-
+      });
 
       if (mapList != null) print('Data fetched successfully...');
       notifyListeners();

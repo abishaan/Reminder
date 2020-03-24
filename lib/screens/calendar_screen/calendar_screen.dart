@@ -105,7 +105,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: Text(
                   DateFormat.yMMMd().format(_calenderDay).toString(),
                   style: TextStyle(
-                    color: ThemeColor.subTitleColor,
+                    color: ThemeColor.subTitle,
                   ),
                 ),
               ),

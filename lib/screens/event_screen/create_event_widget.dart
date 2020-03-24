@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:reminder/api/event_api.dart';
+import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
 
@@ -53,9 +53,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   void _validateForm() {
     if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
 
-      EventAPI eventAPI = new EventAPI();
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
             reference: _reference,
@@ -69,9 +67,9 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
         if (event != null) {
           if (widget.isEdit) {
-            eventAPI.updateEvent(event);
+            EventService(uid:'').updateEvent(event);
           } else {
-            eventAPI.addEvent(event);
+            EventService(uid:'').addEvent(event);
           }
         }
       }

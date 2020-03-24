@@ -1,9 +1,6 @@
-import 'dart:collection';
 import 'dart:core';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
 import 'package:reminder/screens/category_screen/category_screen.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';

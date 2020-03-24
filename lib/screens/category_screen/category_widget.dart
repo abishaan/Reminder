@@ -25,7 +25,7 @@ class CategoryWidget extends StatelessWidget {
             child: Text(
               label,
               style: TextStyle(
-                  color: ThemeColor.titleColor,
+                  color: ThemeColor.title,
                   fontWeight: FontWeight.w700,
                   fontSize: 12),
             ),
