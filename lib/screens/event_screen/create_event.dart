@@ -26,7 +26,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   ];
 
   //form values
-  DocumentReference _reference;
   String _eventDescription;
   String _eventCategory;
   DateTime _eventDate;
@@ -35,7 +34,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   void initState() {
     if (widget.isEdit) {
-      _reference = widget.event.reference;
       _eventDescription = widget.event.description;
       _eventCategory = widget.event.category;
       _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
