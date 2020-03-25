@@ -36,6 +36,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.dispose();
   }
 
+
   Widget _buildEventList() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -121,19 +122,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<String> _filterEvent(String date) {
     List<RemindEvent> tempEventList =
-    calendarEvents.where((i) => i.remindDate == date).toList();
-    print(tempEventList);
-//    // ignore: missing_return
-//      tempEventList.sort((e1, e2) {
-//        print(e1.timestamp.toString() + '---------e1');
-//        print(e2.timestamp.toString() + '---------e2');
-//
-////      e1.timestamp?.compareTo(e2.timestamp ?? (e1.timestamp + 1))
-//      });
-
+        calendarEvents.where((i) => i.remindDate == date).toList();
     List<String> filteredList = List();
     tempEventList.forEach((event) => filteredList.add(event.toString()));
-    print(filteredList);
     return filteredList;
   }
 
@@ -151,8 +142,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     }
 
     _selectedEvents = _events[DateTime.parse(DateFormat("yyyy-MM-dd")
-        .parse(_calenderDay.toString())
-        .toString())] ??
+            .parse(_calenderDay.toString())
+            .toString())] ??
         [];
 
     return SafeArea(
@@ -164,10 +155,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Container(
                 height: 20.0,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 color: ThemeColor.primaryAccent.withAlpha(10),
                 child: Text(
                   DateFormat.yMMMd().format(_calenderDay).toString(),
@@ -178,15 +166,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               _selectedEvents.length == 0
                   ? EmptyImageWidget(
-                title: 'You have a free day.',
-                subtitle:
-                'Ready for some new events? Tap + to write them down.',
-                imagePath: 'assets/images/archive.png',
-                topPadding: 30.0,
-              )
+                      title: 'You have a free day.',
+                      subtitle:
+                          'Ready for some new events? Tap + to write them down.',
+                      imagePath: 'assets/images/archive.png',
+                      topPadding: 30.0,
+                    )
                   : _buildEventList(),
             ],
           )),
     );
   }
+
 }

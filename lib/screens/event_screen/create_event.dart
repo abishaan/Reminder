@@ -57,32 +57,27 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         initialTime: widget.isEdit ? _eventTime : TimeOfDay.now(),
       );
 
-  timeToDouble() {
-//    print(TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(time)));
-  }
-
   void _validateForm() {
-    if (_formKey.currentState.validate()) {
-      timeToDouble();
-      if (_eventDate != null && _eventTime != null) {
-        RemindEvent event = new RemindEvent(
-            reference: _reference,
-            category: _eventCategory,
-            description: _eventDescription,
-            remindDate: DateFormat("yyyy-MM-dd")
-                .parse(_eventDate.toString())
-                .toString(),
-            remindTime: _eventTime.format(context).toString(),
-            timestamp: DateFormat.jm()
-                .parse(_eventTime.format(context).toString())
-                .millisecondsSinceEpoch);
+    if (_formKey.currentState.validate() &&
+        _eventDate != null &&
+        _eventTime != null) {
 
-        if (event != null) {
-          if (widget.isEdit) {
-            EventService().updateEvent(event);
-          } else {
-            EventService().addEvent(event);
-          }
+      RemindEvent event = new RemindEvent(
+          reference: _reference,
+          category: _eventCategory,
+          description: _eventDescription,
+          remindDate:
+              DateFormat("yyyy-MM-dd").parse(_eventDate.toString()).toString(),
+          remindTime: _eventTime.format(context).toString(),
+          timestamp: DateFormat.jm()
+              .parse(_eventTime.format(context).toString())
+              .millisecondsSinceEpoch);
+
+      if (event != null) {
+        if (widget.isEdit) {
+          EventService().updateEvent(event);
+        } else {
+          EventService().addEvent(event);
         }
       }
 

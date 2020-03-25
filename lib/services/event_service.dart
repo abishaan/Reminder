@@ -10,7 +10,10 @@ class EventService {
       .collection(Constants.eventCollection);
 
   Stream<List<RemindEvent>> getAllEvents() {
-    return _collectionReference.snapshots().map(_eventListFormSnapshot);
+    return _collectionReference
+        .orderBy('timestamp')
+        .snapshots()
+        .map(_eventListFormSnapshot);
   }
 
   Stream<QuerySnapshot> getCurrentEventSnapshots() {
@@ -18,7 +21,8 @@ class EventService {
         .where('remindDate',
             isEqualTo: DateFormat("yyyy-MM-dd")
                 .parse(DateTime.now().toString())
-                .toString()).orderBy('timestamp')
+                .toString())
+        .orderBy('timestamp')
         .snapshots();
   }
 
