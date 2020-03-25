@@ -53,7 +53,7 @@ class CalendarEventCard extends StatelessWidget {
                       leading: Icon(Icons.delete),
                       title: Text('Delete'),
                       onTap: () {
-                        EventService().deleteEvent(remindEvent.reference);
+                        EventService().deleteEventById(remindEvent.id);
                         Navigator.pop(context);
                       },
                     ),

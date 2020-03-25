@@ -54,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             isScrollControlled: true,
             context: context,
-            builder: (_) => CreateEventWidget(isEdit: false),
+            builder: (_) => CreateEventWidget(
+              isEdit: false,
+            ),
           );
         },
         tooltip: 'Add Event',

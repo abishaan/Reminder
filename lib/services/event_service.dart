@@ -29,6 +29,7 @@ class EventService {
   List<RemindEvent> _eventListFormSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents
         .map((document) => RemindEvent(
+            reference: document.reference,
             category: document.data['category'] ?? '',
             description: document.data['description'] ?? '',
             remindDate: document.data['remindDate'] ?? '',
@@ -45,9 +46,10 @@ class EventService {
   }
 
   updateEvent(RemindEvent event) async {
+    String id = event.reference != null ? event.reference.documentID : event.id;
     try {
       await _collectionReference
-          .document(event.reference.documentID)
+          .document(id)
           .updateData(event.toJson());
     } catch (e) {
       print('Error: ${e.toString()}');
@@ -57,6 +59,14 @@ class EventService {
   deleteEvent(DocumentReference reference) async {
     try {
       await _collectionReference.document(reference.documentID).delete();
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
+  }
+
+  deleteEventById(String id) async {
+    try {
+      await _collectionReference.document(id).delete();
     } catch (e) {
       print('Error: ${e.toString()}');
     }

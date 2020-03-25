@@ -45,31 +45,40 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildEventRow(String event) {
-    String description = '';
+    String id = '';
     String category = '';
+    String description = '';
     String remindTime = '';
+    String remindDate = '';
 
-    List<String> eventDetails = event.split('-');
+    List<String> eventDetails = event.split('^');
     eventDetails.asMap().forEach((index, element) {
       switch (index) {
         case 0:
-          category = element;
+          id = element;
           break;
         case 1:
-          description = element;
+          category = element;
           break;
         case 2:
+          description = element;
+          break;
+        case 3:
           remindTime = element;
+          break;
+        case 4:
+          remindDate = element;
           break;
       }
     });
 
     return CalendarEventCard(
       RemindEvent(
+        id:id,
         category: category,
         description: description,
         remindTime: remindTime,
-        remindDate: '',
+        remindDate: remindDate ?? _calenderDay
       ),
     );
   }

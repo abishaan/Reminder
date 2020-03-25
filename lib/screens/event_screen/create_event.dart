@@ -27,6 +27,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   //form values
   DocumentReference _reference;
+  String _id;
   String _eventDescription;
   String _eventCategory;
   DateTime _eventDate;
@@ -34,7 +35,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   @override
   void initState() {
+    super.initState();
+
     if (widget.isEdit) {
+      _id = widget.event.id;
       _reference = widget.event.reference;
       _eventDescription = widget.event.description;
       _eventCategory = widget.event.category;
@@ -42,7 +46,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
       _eventTime = TimeOfDay.fromDateTime(
           DateFormat.jm().parse(widget.event.remindTime));
     }
-    super.initState();
   }
 
   Future<DateTime> _inputRemindDate(BuildContext context) => showDatePicker(
@@ -64,6 +67,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         _eventDate != null &&
         _eventTime != null) {
       RemindEvent event = new RemindEvent(
+          id: _id,
           reference: _reference,
           category: _eventCategory,
           description: _eventDescription,

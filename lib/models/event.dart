@@ -6,11 +6,13 @@ class RemindEvent {
   final String remindDate;
   final String remindTime;
   final int timestamp;
+  String id;
 
   DocumentReference reference;
 
   RemindEvent(
-      {this.category,
+      {this.id,
+      this.category,
       this.description,
       this.remindDate,
       this.remindTime,
@@ -38,11 +40,13 @@ class RemindEvent {
   @override
   String toString() {
     return reference.documentID +
-        '-' +
+        '^' +
         category +
-        '-' +
+        '^' +
         description +
-        '-' +
-        remindTime;
+        '^' +
+        remindTime +
+        '^' +
+        remindDate;
   }
 }
