@@ -36,29 +36,29 @@ class EventService {
         .toList();
   }
 
-  addEvent(RemindEvent event) {
+  addEvent(RemindEvent event) async {
     try {
-      Firestore.instance.runTransaction((Transaction transaction) async {
-        await _collectionReference.document().setData(event.toJson());
-      });
+      await _collectionReference.document().setData(event.toJson());
     } catch (e) {
       print('Error: ${e.toString()}');
     }
   }
 
-  updateEvent(RemindEvent event) {
+  updateEvent(RemindEvent event) async {
     try {
-      Firestore.instance.runTransaction((transaction) async {
-        await transaction.update(event.reference, event.toJson());
-      });
+      await _collectionReference
+          .document(event.reference.documentID)
+          .updateData(event.toJson());
     } catch (e) {
       print('Error: ${e.toString()}');
     }
   }
 
-  deleteEvent(DocumentReference reference) {
-    Firestore.instance.runTransaction((transaction) async {
-      await transaction.delete(reference);
-    });
+  deleteEvent(DocumentReference reference) async {
+    try {
+      await _collectionReference.document(reference.documentID).delete();
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/services/event_service.dart';
@@ -25,6 +26,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   ];
 
   //form values
+  DocumentReference _reference;
   String _eventDescription;
   String _eventCategory;
   DateTime _eventDate;
@@ -33,6 +35,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   void initState() {
     if (widget.isEdit) {
+      _reference = widget.event.reference;
       _eventDescription = widget.event.description;
       _eventCategory = widget.event.category;
       _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
@@ -46,20 +49,22 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         context: context,
         firstDate: DateTime(2020),
         lastDate: DateTime(2025),
-        initialDate: widget.isEdit ? _eventDate : DateTime.now(),
+        initialDate:
+            widget.isEdit ? _eventDate ?? DateTime.now() : DateTime.now(),
       );
 
   Future<TimeOfDay> _inputRemindTime(BuildContext context) => showTimePicker(
         context: context,
-        initialTime: widget.isEdit ? _eventTime : TimeOfDay.now(),
+        initialTime:
+            widget.isEdit ? _eventTime ?? TimeOfDay.now() : TimeOfDay.now(),
       );
 
   void _validateForm() {
     if (_formKey.currentState.validate() &&
         _eventDate != null &&
         _eventTime != null) {
-
       RemindEvent event = new RemindEvent(
+          reference: _reference,
           category: _eventCategory,
           description: _eventDescription,
           remindDate:

@@ -17,15 +17,13 @@ class RemindEvent {
       this.reference,
       this.timestamp});
 
-  RemindEvent.fromMap(Map<String, dynamic> map, {this.reference})
-      : category = map['category'] ?? '',
-        description = map['description'] ?? '',
-        remindDate = map['remindDate'] ?? '',
-        remindTime = map['remindTime'] ?? '',
-        timestamp = map['timestamp'] ?? 0;
-
   RemindEvent.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+      : reference = snapshot.reference,
+        category = snapshot.data['category'] ?? '',
+        description = snapshot.data['description'] ?? '',
+        remindDate = snapshot.data['remindDate'] ?? '',
+        remindTime = snapshot.data['remindTime'] ?? '',
+        timestamp = snapshot.data['timestamp'] ?? 0;
 
   toJson() {
     return {
@@ -39,6 +37,12 @@ class RemindEvent {
 
   @override
   String toString() {
-    return category + '-' + description + '-' + remindTime;
+    return reference.documentID +
+        '-' +
+        category +
+        '-' +
+        description +
+        '-' +
+        remindTime;
   }
 }
