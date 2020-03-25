@@ -63,7 +63,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         _eventTime != null) {
 
       RemindEvent event = new RemindEvent(
-          reference: _reference,
           category: _eventCategory,
           description: _eventDescription,
           remindDate:
