@@ -112,6 +112,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.grey[600]),
                   initialValue: _eventTitle != null ? _eventTitle : null,
                   decoration: InputDecoration(
                     hintText: 'Enter event title',
@@ -125,6 +126,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: TextFormField(
+                  style: TextStyle(color: Colors.grey[600]),
                   initialValue:
                       _eventDescription != null ? _eventDescription : null,
                   decoration: InputDecoration(
@@ -138,19 +140,21 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
               ),
               _formHeading('Category'),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
+                padding: const EdgeInsets.only(bottom: 20.0,),
                 child: DropdownButtonFormField(
+                  value: _eventCategory != null ? _eventCategory : null,
                   items: _categories
                       .map((category) => DropdownMenuItem(
                             value: category,
-                            child: Text('$category'),
+                            child: Text('$category', style: TextStyle(color: Colors.grey[600])),
                           ))
                       .toList(),
                   decoration: InputDecoration(
                     hintText: 'Event category',
                   ),
+                  isDense: true,
                   validator: (value) =>
-                      value.isEmpty ? 'Please enter some text' : null,
+                      value == null ? 'Please select event category' : null,
                   onChanged: (value) => setState(() => _eventCategory = value),
                 ),
               ),
