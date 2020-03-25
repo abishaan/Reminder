@@ -98,7 +98,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+      padding: EdgeInsets.fromLTRB(20, 35, 20, 10),
       child: SingleChildScrollView(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
