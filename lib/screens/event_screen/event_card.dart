@@ -10,43 +10,6 @@ class EventCard extends StatelessWidget {
 
   const EventCard({Key key, this.index, this.remindEvent}) : super(key: key);
 
-  _showBottomSheet(BuildContext context) {
-    showDialog<String>(
-      context: context,
-      builder: (_) => SimpleDialog(
-        children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Edit'),
-            onTap: () {
-              Navigator.pop(context);
-              showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-                isScrollControlled: true,
-                context: context,
-                builder: (_) =>
-                    CreateEventWidget(event: remindEvent, isEdit: true),
-              );
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Delete'),
-            onTap: () {
-              EventService().deleteEvent(remindEvent.reference);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -58,9 +21,9 @@ class EventCard extends StatelessWidget {
           color: ThemeColor.darkAccent.withAlpha(40),
         ),
       ),
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
-        height: 100,
+//        height: 110,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: InkWell(
@@ -109,7 +72,7 @@ class EventCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      remindEvent.title,
+                      remindEvent.category,
                       style: TextStyle(fontWeight: FontWeight.w700),
                     ),
                     Container(
@@ -142,7 +105,7 @@ class EventCard extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 12, bottom: 4, left: 4),
+                      padding: EdgeInsets.only(top: 10, bottom: 4, left: 4),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -164,16 +127,6 @@ class EventCard extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              remindEvent.category != ''
-                                  ? '${remindEvent.category} at '
-                                  : '',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 15),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 2.0),
                             child: Text(
                               remindEvent.remindTime,
                               style: TextStyle(fontWeight: FontWeight.w700),

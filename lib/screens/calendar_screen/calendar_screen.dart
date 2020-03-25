@@ -36,64 +36,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.dispose();
   }
 
-  List<String> _filterEvent(String date) {
-    List<RemindEvent> tempEventList =
-        calendarEvents.where((i) => i.remindDate == date).toList();
-    List<String> filteredList = List();
-    tempEventList.forEach((event) => filteredList.add(event.toString()));
-    return filteredList;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    calendarEvents = Provider.of<List<RemindEvent>>(context);
-    if (calendarEvents != null) {
-      calendarEvents.forEach((event) {
-        dates.add(event.remindDate);
-      });
-
-      dates.forEach((date) {
-        _events[DateTime.parse(date)] = _filterEvent(date) ?? [];
-      });
-    }
-
-    _selectedEvents = _events[DateTime.parse(DateFormat("yyyy-MM-dd")
-            .parse(_calenderDay.toString())
-            .toString())] ??
-        [];
-
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          body: ListView(
-            children: <Widget>[
-              _buildTableCalendar(),
-              Container(
-                height: 20.0,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                width: MediaQuery.of(context).size.width,
-                color: ThemeColor.primaryAccent.withAlpha(10),
-                child: Text(
-                  DateFormat.yMMMd().format(_calenderDay).toString(),
-                  style: TextStyle(
-                    color: ThemeColor.subTitle,
-                  ),
-                ),
-              ),
-              _selectedEvents.length == 0
-                  ? EmptyImageWidget(
-                      title: 'You have a free day.',
-                      subtitle:
-                          'Ready for some new events? Tap + to write them down.',
-                      imagePath: 'assets/images/archive.png',
-                      topPadding: 30.0,
-                    )
-                  : _buildEventList(),
-            ],
-          )),
-    );
-  }
-
   Widget _buildEventList() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -102,7 +44,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _buildEventRow(String event) {
-    String title = '';
     String description = '';
     String category = '';
     String remindTime = '';
@@ -111,15 +52,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
     eventDetails.asMap().forEach((index, element) {
       switch (index) {
         case 0:
-          title = element;
+          category = element;
           break;
         case 1:
           description = element;
           break;
         case 2:
-          category = element;
-          break;
-        case 3:
           remindTime = element;
           break;
       }
@@ -127,9 +65,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return CalendarEventCard(
       RemindEvent(
-        title: title,
-        description: description,
         category: category,
+        description: description,
         remindTime: remindTime,
         remindDate: '',
       ),
@@ -158,27 +95,98 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _calendarIndicator(DateTime date, List<dynamic> events) {
     return events.isNotEmpty
         ? Positioned(
-            right: _calendarController.isSelected(date) ? 1 : null,
-            bottom: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _calendarController.isSelected(date)
-                      ? ThemeColor.primaryAccent
-                      : ThemeColor.accent),
-              width: 15.0,
-              height: 15.0,
-              child: Center(
+      right: _calendarController.isSelected(date) ? 1 : null,
+      bottom: 1,
+      child: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _calendarController.isSelected(date)
+                ? ThemeColor.primaryAccent
+                : ThemeColor.accent),
+        width: 15.0,
+        height: 15.0,
+        child: Center(
+          child: Text(
+            '${events.length}',
+            style: TextStyle().copyWith(
+              color: Colors.white,
+              fontSize: 10.0,
+            ),
+          ),
+        ),
+      ),
+    )
+        : SizedBox();
+  }
+
+  List<String> _filterEvent(String date) {
+    List<RemindEvent> tempEventList =
+    calendarEvents.where((i) => i.remindDate == date).toList();
+    print(tempEventList);
+//    // ignore: missing_return
+//      tempEventList.sort((e1, e2) {
+//        print(e1.timestamp.toString() + '---------e1');
+//        print(e2.timestamp.toString() + '---------e2');
+//
+////      e1.timestamp?.compareTo(e2.timestamp ?? (e1.timestamp + 1))
+//      });
+
+    List<String> filteredList = List();
+    tempEventList.forEach((event) => filteredList.add(event.toString()));
+    print(filteredList);
+    return filteredList;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    calendarEvents = Provider.of<List<RemindEvent>>(context);
+    if (calendarEvents != null) {
+      calendarEvents.forEach((event) {
+        dates.add(event.remindDate);
+      });
+
+      dates.forEach((date) {
+        _events[DateTime.parse(date)] = _filterEvent(date) ?? [];
+      });
+    }
+
+    _selectedEvents = _events[DateTime.parse(DateFormat("yyyy-MM-dd")
+        .parse(_calenderDay.toString())
+        .toString())] ??
+        [];
+
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView(
+            children: <Widget>[
+              _buildTableCalendar(),
+              Container(
+                height: 20.0,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                color: ThemeColor.primaryAccent.withAlpha(10),
                 child: Text(
-                  '${events.length}',
-                  style: TextStyle().copyWith(
-                    color: Colors.white,
-                    fontSize: 10.0,
+                  DateFormat.yMMMd().format(_calenderDay).toString(),
+                  style: TextStyle(
+                    color: ThemeColor.subTitle,
                   ),
                 ),
               ),
-            ),
-          )
-        : SizedBox();
+              _selectedEvents.length == 0
+                  ? EmptyImageWidget(
+                title: 'You have a free day.',
+                subtitle:
+                'Ready for some new events? Tap + to write them down.',
+                imagePath: 'assets/images/archive.png',
+                topPadding: 30.0,
+              )
+                  : _buildEventList(),
+            ],
+          )),
+    );
   }
 }

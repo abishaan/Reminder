@@ -10,7 +10,7 @@ class EventList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: EventService().getEventsByDate(),
+        stream: EventService().getCurrentEventSnapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return LinearProgressIndicator();
           return snapshot.data.documents.length > 0

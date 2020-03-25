@@ -1,50 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RemindEvent {
-  final String title;
-  final String description;
   final String category;
+  final String description;
   final String remindDate;
   final String remindTime;
+  final int timestamp;
 
   DocumentReference reference;
 
   RemindEvent(
-      {this.title,
+      {this.category,
       this.description,
-      this.category,
       this.remindDate,
       this.remindTime,
-      this.reference});
+      this.reference,
+      this.timestamp});
 
   RemindEvent.fromMap(Map<String, dynamic> map, {this.reference})
-      : title = map['title'] ?? '',
+      : category = map['category'] ?? '',
         description = map['description'] ?? '',
-        category = map['category'] ?? '',
         remindDate = map['remindDate'] ?? '',
-        remindTime = map['remindTime'] ?? '';
+        remindTime = map['remindTime'] ?? '',
+        timestamp = map['timestamp'] ?? 0;
 
   RemindEvent.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, reference: snapshot.reference);
 
   toJson() {
     return {
-      'title': title,
-      'description': description,
       'category': category,
+      'description': description,
       'remindDate': remindDate,
-      'remindTime': remindTime
+      'remindTime': remindTime,
+      'timestamp': timestamp
     };
   }
 
   @override
   String toString() {
-    return title +
-        '-' +
-        description +
-        '-' +
-        category +
-        '-' +
-        remindTime + '-' + remindDate;
+    return category + '-' + description + '-' + remindTime;
   }
 }

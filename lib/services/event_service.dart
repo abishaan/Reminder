@@ -13,21 +13,20 @@ class EventService {
     return _collectionReference.snapshots().map(_eventListFormSnapshot);
   }
 
-  Stream<QuerySnapshot> getEventsByDate() {
+  Stream<QuerySnapshot> getCurrentEventSnapshots() {
     return _collectionReference
         .where('remindDate',
             isEqualTo: DateFormat("yyyy-MM-dd")
                 .parse(DateTime.now().toString())
-                .toString())
+                .toString()).orderBy('timestamp')
         .snapshots();
   }
 
   List<RemindEvent> _eventListFormSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents
         .map((document) => RemindEvent(
-            title: document.data['title'] ?? '',
-            description: document.data['description'] ?? '',
             category: document.data['category'] ?? '',
+            description: document.data['description'] ?? '',
             remindDate: document.data['remindDate'] ?? '',
             remindTime: document.data['remindTime'] ?? ''))
         .toList();

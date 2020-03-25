@@ -27,7 +27,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   //form values
   DocumentReference _reference;
-  String _eventTitle;
   String _eventDescription;
   String _eventCategory;
   DateTime _eventDate;
@@ -37,7 +36,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   void initState() {
     if (widget.isEdit) {
       _reference = widget.event.reference;
-      _eventTitle = widget.event.title;
       _eventDescription = widget.event.description;
       _eventCategory = widget.event.category;
       _eventDate = DateFormat("yyyy-MM-dd").parse(widget.event.remindDate);
@@ -59,20 +57,25 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
         initialTime: widget.isEdit ? _eventTime : TimeOfDay.now(),
       );
 
+  timeToDouble() {
+//    print(TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(time)));
+  }
+
   void _validateForm() {
     if (_formKey.currentState.validate()) {
-//      _formKey.currentState.save();
-
+      timeToDouble();
       if (_eventDate != null && _eventTime != null) {
         RemindEvent event = new RemindEvent(
             reference: _reference,
-            title: _eventTitle,
-            description: _eventDescription,
             category: _eventCategory,
+            description: _eventDescription,
             remindDate: DateFormat("yyyy-MM-dd")
                 .parse(_eventDate.toString())
                 .toString(),
-            remindTime: _eventTime.format(context).toString());
+            remindTime: _eventTime.format(context).toString(),
+            timestamp: DateFormat.jm()
+                .parse(_eventTime.format(context).toString())
+                .millisecondsSinceEpoch);
 
         if (event != null) {
           if (widget.isEdit) {
@@ -108,18 +111,27 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _formHeading('Title'),
+              _formHeading('Category'),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.grey[600]),
-                  initialValue: _eventTitle != null ? _eventTitle : null,
+                padding: const EdgeInsets.only(
+                  bottom: 20.0,
+                ),
+                child: DropdownButtonFormField(
+                  value: _eventCategory != null ? _eventCategory : null,
+                  items: _categories
+                      .map((category) => DropdownMenuItem(
+                            value: category,
+                            child: Text('$category',
+                                style: TextStyle(color: Colors.grey[600])),
+                          ))
+                      .toList(),
                   decoration: InputDecoration(
-                    hintText: 'Enter event title',
+                    hintText: 'Event category',
                   ),
+                  isDense: true,
                   validator: (value) =>
-                      value.isEmpty ? 'Please enter event title' : null,
-                  onChanged: (value) => setState(() => _eventTitle = value),
+                      value == null ? 'Please select event category' : null,
+                  onChanged: (value) => setState(() => _eventCategory = value),
                 ),
               ),
               _formHeading('Description'),
@@ -136,26 +148,6 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                       value.isEmpty ? 'Please enter event description' : null,
                   onChanged: (value) =>
                       setState(() => _eventDescription = value),
-                ),
-              ),
-              _formHeading('Category'),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0,),
-                child: DropdownButtonFormField(
-                  value: _eventCategory != null ? _eventCategory : null,
-                  items: _categories
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text('$category', style: TextStyle(color: Colors.grey[600])),
-                          ))
-                      .toList(),
-                  decoration: InputDecoration(
-                    hintText: 'Event category',
-                  ),
-                  isDense: true,
-                  validator: (value) =>
-                      value == null ? 'Please select event category' : null,
-                  onChanged: (value) => setState(() => _eventCategory = value),
                 ),
               ),
               _formHeading('Remind date'),

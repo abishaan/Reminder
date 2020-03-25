@@ -13,13 +13,13 @@ class CalendarEventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
               color: ThemeColor.primaryAccent.withAlpha(40), width: 3)),
       child: Container(
-        height: 100,
+//        height: 110,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: InkWell(
@@ -96,7 +96,7 @@ class CalendarEventCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          remindEvent.title,
+                          remindEvent.category,
                           style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                         Container(
@@ -129,7 +129,7 @@ class CalendarEventCard extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 12, bottom: 4, left: 4),
+                          padding: EdgeInsets.only(top: 10, bottom: 4, left: 4),
                           child: Row(
                             children: <Widget>[
                               Container(
@@ -142,21 +142,14 @@ class CalendarEventCard extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 4,
-                                      color:  Colors.deepPurpleAccent.withAlpha(700),
+                                      color: Colors.deepPurpleAccent
+                                          .withAlpha(700),
                                     ),
                                   ],
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  '${remindEvent.category} at '  ,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700, fontSize: 15),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 2.0),
                                 child: Text(
                                   remindEvent.remindTime,
                                   style: TextStyle(fontWeight: FontWeight.w700),
