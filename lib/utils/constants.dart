@@ -3,4 +3,5 @@ class Constants {
   static const String eventCollection = "Events";
   static const String categoryCollection = "Categories";
   static const String uid = "123";
+  static const String iconFontFamily = "MaterialIcons";
 }

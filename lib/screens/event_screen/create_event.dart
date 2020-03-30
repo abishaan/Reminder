@@ -91,18 +91,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
     }
   }
 
-  Widget _formHeading(String label) {
-    return Text(label,
-        style: TextStyle(
-          color: ThemeColor.darkAccent,
-          fontWeight: FontWeight.w600,
-        ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 25, bottom: 10),
+      padding: EdgeInsets.only(top: 35, bottom: 10),
       child: SingleChildScrollView(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),

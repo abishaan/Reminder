@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/services/category_service.dart';
-import 'package:reminder/services/event_service.dart';
-import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/constants.dart';
 
 class CreateCategoryWidget extends StatefulWidget {
   final Category category;
@@ -28,19 +27,11 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
     'Other'
   ];
 
-  final List<String> _colors = [
-    'Personal',
-    'Study',
-    'Work',
-    'Appoinment',
-    'Other'
-  ];
-
   //form values
   DocumentReference _reference;
   String _categoryName;
-  IconData _categoryIcon;
-  Color _categoryColor;
+  IconData _categoryIcon = Icons.image;
+  Color _categoryColor = ThemeColor.primaryAccent;
 
   @override
   void initState() {
@@ -48,8 +39,11 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
 
     if (widget.isEdit) {
       _reference = widget.category.reference;
-      _categoryColor = widget.category.color;
-      _categoryIcon = widget.category.icon;
+      _categoryColor = Color(widget.category.color);
+      _categoryIcon = IconData(
+        widget.category.iconCodePoint,
+        fontFamily: Constants.iconFontFamily,
+      );
       _categoryName = widget.category.name;
     }
   }
@@ -57,11 +51,10 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
   void _validateForm() {
     if (_formKey.currentState.validate()) {
       Category category = new Category(
-        reference: _reference,
-        color: _categoryColor,
-        icon: _categoryIcon,
-        name: _categoryName,
-      );
+          reference: _reference,
+          color: _categoryColor.value,
+          iconCodePoint: _categoryIcon.codePoint,
+          name: _categoryName);
 
       if (category != null) {
         if (widget.isEdit) {
@@ -75,18 +68,15 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
     }
   }
 
-  Widget _formHeading(String label) {
-    return Text(label,
-        style: TextStyle(
-          color: ThemeColor.darkAccent,
-          fontWeight: FontWeight.w600,
-        ));
-  }
+  changeColor(Color color) => setState(() => _categoryColor = color);
+
+  useColorBackground(Color backgroundColor) =>
+      1.0 / (backgroundColor.computeLuminance()) > 1.5;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 25, bottom: 10),
+      padding: EdgeInsets.only(top: 35, bottom: 10),
       child: SingleChildScrollView(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -111,6 +101,9 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
                     ),
                   ),
                   subtitle: TextFormField(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                    },
                     style: TextStyle(color: Colors.grey[600]),
                     initialValue: _categoryName != null ? _categoryName : null,
                     decoration: InputDecoration(
@@ -124,7 +117,8 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
               ),
               Divider(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                },
                 child: ListTile(
                   leading: CircleAvatar(
                     child: Icon(Icons.image, color: Colors.white),
@@ -142,11 +136,31 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
               ),
               Divider(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        titlePadding: const EdgeInsets.all(0.0),
+                        contentPadding: const EdgeInsets.all(0.0),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: _categoryColor,
+                            onColorChanged: changeColor,
+                            pickerAreaHeightPercent: 0.7,
+                            showLabel: false,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
                 child: ListTile(
                   leading: CircleAvatar(
                     child: Icon(Icons.color_lens, color: Colors.white),
-                    backgroundColor: ThemeColor.primaryAccent,
+                    backgroundColor: useColorBackground(_categoryColor)
+                        ? _categoryColor
+                        : ThemeColor.primaryAccent,
                   ),
                   title: Text(
                     'Color',

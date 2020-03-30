@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/category_widget.dart';
+import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -27,18 +28,28 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: _labelWidget('Categories'),
+          appBar: AppBar(
+            title: _labelWidget('Categories'),
+            backgroundColor: Colors.white,
+            elevation: 0,
+          ),
           backgroundColor: Colors.white,
-          elevation: 0,
-        ),
-        backgroundColor: Colors.white,
-        body: ListView.builder(
-            itemCount: categories.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return CategoryWidget(category: categories[index]);
-            }),
+          body: categories.length > 0
+              ? ListView.builder(
+                  itemCount: categories.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return CategoryWidget(category: categories[index]);
+                  })
+              : ListView(
+                  children: <Widget>[
+                    EmptyImageWidget(
+                        title: 'You have no categories for your events.',
+                        subtitle:
+                            'Create some categories? Tap + to write them down.',
+                        imagePath: 'assets/images/archive.png'),
+                  ],
+                ),
 
 //        body: ListView(
 //          padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -53,7 +64,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 //
 //          ],
 //        ),
-      ),
+          ),
     );
   }
 }

@@ -14,12 +14,14 @@ class CategoryService {
 
   List<Category> _categoryListFormSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents
-        .map((document) => Category(
-              reference: document.reference,
-              color: document.data['color'] ?? '',
-              icon: document.data['icon'] ?? '',
-              name: document.data['name'] ?? '',
-            ))
+        .map(
+          (document) => Category(
+            reference: document.reference,
+            color: document.data['color'] ?? '',
+            iconCodePoint: document.data['iconCodePoint'] ?? '',
+            name: document.data['name'] ?? '',
+          ),
+        )
         .toList();
   }
 
