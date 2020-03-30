@@ -62,7 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             builder: (_) => _bottomNavCategory
                 ? CreateCategoryWidget(isEdit: false)
-                : CreateEventWidget(isEdit: false),
+                : StreamProvider<List<Category>>.value(
+                    value: CategoryService().getAllCategories(),
+                    child: CreateEventWidget(isEdit: false),
+                  ),
           );
         },
         tooltip: 'Add Event',

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/models/category.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
@@ -18,13 +20,6 @@ class CreateEventWidget extends StatefulWidget {
 
 class _CreateEventWidgetState extends State<CreateEventWidget> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> _categories = [
-    'Personal',
-    'Study',
-    'Work',
-    'Appoinment',
-    'Other'
-  ];
 
   //form values
   DocumentReference _reference;
@@ -93,6 +88,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _categoryNames = List();
+    final categories = Provider.of<List<Category>>(context);
+
+    if (categories == null) {
+      _categoryNames = ['Personal', 'Study', 'Work', 'Appoinment', 'Other'];
+    } else {
+      categories.forEach((category) => _categoryNames.add(category.name));
+    }
+
     return Container(
       padding: EdgeInsets.only(top: 35, bottom: 10),
       child: SingleChildScrollView(
@@ -120,7 +124,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                   ),
                   subtitle: DropdownButtonFormField(
                     value: _eventCategory != null ? _eventCategory : null,
-                    items: _categories
+                    items: _categoryNames
                         .map((category) => DropdownMenuItem(
                               value: category,
                               child: Text('$category',

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/utils/constants.dart';
 
@@ -31,6 +32,24 @@ class CategoryService {
     } catch (e) {
       print('Error: ${e.toString()}');
     }
+  }
+
+  addBasicCategories() {
+    addCategory(Category(
+      color: Colors.pink.value,
+      iconCodePoint: 59389,
+      name: 'Personal',
+    ));
+    addCategory(Category(
+      color: Colors.purple.value,
+      iconCodePoint: 59641,
+      name: 'Work',
+    ));
+    addCategory(Category(
+      color: Colors.red.value,
+      iconCodePoint: 58740,
+      name: 'Other',
+    ));
   }
 
   updateCategory(Category category) async {

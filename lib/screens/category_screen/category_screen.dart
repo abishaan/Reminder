@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
-import 'package:reminder/screens/category_screen/category_widget.dart';
+import 'package:reminder/screens/category_screen/category_card.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 
@@ -28,43 +28,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            title: _labelWidget('Categories'),
-            backgroundColor: Colors.white,
-            elevation: 0,
-          ),
+        appBar: AppBar(
+          title: _labelWidget('Categories'),
           backgroundColor: Colors.white,
-          body: categories.length > 0
-              ? ListView.builder(
-                  itemCount: categories.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return CategoryWidget(category: categories[index]);
-                  })
-              : ListView(
-                  children: <Widget>[
-                    EmptyImageWidget(
-                        title: 'You have no categories for your events.',
-                        subtitle:
-                            'Create some categories? Tap + to write them down.',
-                        imagePath: 'assets/images/archive.png'),
-                  ],
-                ),
-
-//        body: ListView(
-//          padding: const EdgeInsets.symmetric(horizontal: 15),
-//          shrinkWrap: true,
-//          children: <Widget>[
-//            CategoryWidget(Icons.work, 'Personal', Colors.red),
-//            CategoryWidget(Icons.work, 'Work', Colors.purple),
-//            CategoryWidget(Icons.timelapse, 'Meeting', Colors.indigo),
-//            CategoryWidget(Icons.cake, 'Birthday', Colors.pink),
-//            CategoryWidget(Icons.book, 'Study', Colors.orange),
-//            // ignore: missing_return
-//
-//          ],
-//        ),
-          ),
+          elevation: 0,
+        ),
+        backgroundColor: Colors.white,
+        body: categories.length > 0
+            ? ListView.builder(
+                itemCount: categories.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return CategoryCard(category: categories[index]);
+                })
+            : ListView(
+                children: <Widget>[
+                  EmptyImageWidget(
+                      title: 'You have no categories for your events.',
+                      subtitle:
+                          'Create some categories? Tap + to write them down.',
+                      imagePath: 'assets/images/archive.png'),
+                ],
+              ),
+      ),
     );
   }
 }

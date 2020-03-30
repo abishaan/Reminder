@@ -30,7 +30,7 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
   //form values
   DocumentReference _reference;
   String _categoryName;
-  IconData _categoryIcon = Icons.image;
+  IconData _categoryIcon = Icons.category;
   Color _categoryColor = ThemeColor.primaryAccent;
 
   @override

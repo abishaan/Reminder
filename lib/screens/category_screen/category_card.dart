@@ -5,10 +5,10 @@ import 'package:reminder/services/category_service.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
-class CategoryWidget extends StatelessWidget {
+class CategoryCard extends StatelessWidget {
   final Category category;
 
-  const CategoryWidget({
+  const CategoryCard({
     this.category,
     Key key,
   }) : super(key: key);
@@ -18,12 +18,12 @@ class CategoryWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
       child: Card(
-        elevation: 2,
+        elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            color: Color(category.color).withAlpha(40),
-            width: 2,
+            color: Color(category.color).withAlpha(30),
+            width: 3,
           ),
         ),
         child: InkWell(
