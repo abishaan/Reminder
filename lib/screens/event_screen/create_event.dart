@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
@@ -101,7 +102,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20, 35, 20, 10),
+      padding: EdgeInsets.only(top: 25, bottom: 10),
       child: SingleChildScrollView(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -111,83 +112,133 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _formHeading('Category'),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 20.0,
-                ),
-                child: DropdownButtonFormField(
-                  value: _eventCategory != null ? _eventCategory : null,
-                  items: _categories
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text('$category',
-                                style: TextStyle(color: Colors.grey[600])),
-                          ))
-                      .toList(),
-                  decoration: InputDecoration(
-                    hintText: 'Event category',
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Icon(Icons.category, color: Colors.white),
+                    backgroundColor: ThemeColor.primaryAccent,
                   ),
-                  isDense: true,
-                  validator: (value) =>
-                      value == null ? 'Please select event category' : null,
-                  onChanged: (value) => setState(() => _eventCategory = value),
-                ),
-              ),
-              _formHeading('Description'),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  style: TextStyle(color: Colors.grey[600]),
-                  initialValue:
-                      _eventDescription != null ? _eventDescription : null,
-                  decoration: InputDecoration(
-                    hintText: 'Enter event description',
+                  title: Text(
+                    'Category',
+                    style: TextStyle(
+                      color: ThemeColor.darkAccent,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  validator: (value) =>
-                      value.isEmpty ? 'Please enter event description' : null,
-                  onChanged: (value) =>
-                      setState(() => _eventDescription = value),
-                ),
-              ),
-              _formHeading('Remind date'),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  onTap: () async {
-                    final selectedDate = await _inputRemindDate(context);
-                    setState(() {
-                      _eventDate = selectedDate;
-                    });
-                  },
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    hintText: _eventDate == null
-                        ? 'Select your remind date'
-                        : DateFormat.yMMMd().format(_eventDate).toString(),
+                  subtitle: DropdownButtonFormField(
+                    value: _eventCategory != null ? _eventCategory : null,
+                    items: _categories
+                        .map((category) => DropdownMenuItem(
+                              value: category,
+                              child: Text('$category',
+                                  style: TextStyle(color: Colors.grey[600])),
+                            ))
+                        .toList(),
+                    decoration: InputDecoration(
+                      hintText: 'Event category',
+                    ),
+                    isDense: true,
+                    validator: (value) =>
+                        value == null ? 'Please select event category' : null,
+                    onChanged: (value) =>
+                        setState(() => _eventCategory = value),
                   ),
                 ),
               ),
-              _formHeading('Remind time'),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  onTap: () async {
-                    final selectedTime = await _inputRemindTime(context);
-                    setState(() {
-                      _eventTime = selectedTime;
-                    });
-                  },
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    hintText: _eventTime == null
-                        ? 'Select your remind time'
-                        : _eventTime.format(context),
+              Divider(),
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Icon(Icons.description, color: Colors.white),
+                    backgroundColor: ThemeColor.primaryAccent,
+                  ),
+                  title: Text(
+                    'Description',
+                    style: TextStyle(
+                      color: ThemeColor.darkAccent,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: TextFormField(
+                    style: TextStyle(color: Colors.grey[600]),
+                    initialValue:
+                        _eventDescription != null ? _eventDescription : null,
+                    decoration: InputDecoration(
+                      hintText: 'Enter event description',
+                    ),
+                    validator: (value) =>
+                        value.isEmpty ? 'Please enter event description' : null,
+                    onChanged: (value) =>
+                        setState(() => _eventDescription = value),
+                  ),
+                ),
+              ),
+              Divider(),
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Icon(MdiIcons.calendar, color: Colors.white),
+                    backgroundColor: ThemeColor.primaryAccent,
+                  ),
+                  title: Text(
+                    'Remind Date',
+                    style: TextStyle(
+                      color: ThemeColor.darkAccent,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: TextFormField(
+                    onTap: () async {
+                      final selectedDate = await _inputRemindDate(context);
+                      setState(() {
+                        _eventDate = selectedDate;
+                      });
+                    },
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: _eventDate == null
+                          ? 'Select your remind date'
+                          : DateFormat.yMMMd().format(_eventDate).toString(),
+                    ),
+                  ),
+                ),
+              ),
+              Divider(),
+              InkWell(
+                onTap: () {},
+                child: ListTile(
+                  leading: CircleAvatar(
+                    child: Icon(Icons.access_time, color: Colors.white),
+                    backgroundColor: ThemeColor.primaryAccent,
+                  ),
+                  title: Text(
+                    'Remind Time',
+                    style: TextStyle(
+                      color: ThemeColor.darkAccent,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  subtitle: TextFormField(
+                    onTap: () async {
+                      final selectedTime = await _inputRemindTime(context);
+                      setState(() {
+                        _eventTime = selectedTime;
+                      });
+                    },
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      hintText: _eventTime == null
+                          ? 'Select your remind time'
+                          : _eventTime.format(context),
+                    ),
                   ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(bottom: 20.0),
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
                 alignment: Alignment.bottomRight,
                 child: OutlineButton(
                   child: Text(

@@ -18,9 +18,9 @@ final calendarHeaderStyle = HeaderStyle(
   formatButtonVisible: false,
   centerHeaderTitle: true,
   titleTextStyle: TextStyle(
-    color: ThemeColor.darkAccent,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: FontWeight.w500,
+    color: ThemeColor.primaryAccent,
   ),
 );
 

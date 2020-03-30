@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/category_widget.dart';
-import 'package:reminder/shared/label_widget.dart';
+import 'package:reminder/themes/theme_color.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override
@@ -8,34 +10,49 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  Widget _labelWidget(String label) {
+    return Text(
+      label,
+      maxLines: 1,
+      style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+          color: ThemeColor.primaryAccent),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final categories = Provider.of<List<Category>>(context) ?? [];
+
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          children: <Widget>[
-            LabelWidget('Categories', 1),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    CategoryWidget(Icon(Icons.work), 'Personal'),
-                    CategoryWidget(Icon(Icons.book), 'Study'),
-                    CategoryWidget(Icon(Icons.timelapse), 'Meeting'),
-                    CategoryWidget(Icon(Icons.work), 'Work'),
-                    CategoryWidget(Icon(Icons.category), 'Others'),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-          ],
+        appBar: AppBar(
+          title: _labelWidget('Categories'),
+          backgroundColor: Colors.white,
+          elevation: 0,
         ),
+        backgroundColor: Colors.white,
+        body: ListView.builder(
+            itemCount: categories.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return CategoryWidget(category: categories[index]);
+            }),
+
+//        body: ListView(
+//          padding: const EdgeInsets.symmetric(horizontal: 15),
+//          shrinkWrap: true,
+//          children: <Widget>[
+//            CategoryWidget(Icons.work, 'Personal', Colors.red),
+//            CategoryWidget(Icons.work, 'Work', Colors.purple),
+//            CategoryWidget(Icons.timelapse, 'Meeting', Colors.indigo),
+//            CategoryWidget(Icons.cake, 'Birthday', Colors.pink),
+//            CategoryWidget(Icons.book, 'Study', Colors.orange),
+//            // ignore: missing_return
+//
+//          ],
+//        ),
       ),
     );
   }

@@ -6,8 +6,8 @@ class RemindEvent {
   final String remindDate;
   final String remindTime;
   final int timestamp;
-  String id;
 
+  String id;
   DocumentReference reference;
 
   RemindEvent(
@@ -27,15 +27,13 @@ class RemindEvent {
         remindTime = snapshot.data['remindTime'] ?? '',
         timestamp = snapshot.data['timestamp'] ?? 0;
 
-  toJson() {
-    return {
-      'category': category,
-      'description': description,
-      'remindDate': remindDate,
-      'remindTime': remindTime,
-      'timestamp': timestamp
-    };
-  }
+  toJson() => {
+        'category': category,
+        'description': description,
+        'remindDate': remindDate,
+        'remindTime': remindTime,
+        'timestamp': timestamp
+      };
 
   @override
   String toString() {

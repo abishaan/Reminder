@@ -2,10 +2,13 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder/models/category.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_screen.dart';
 import 'package:reminder/screens/category_screen/category_screen.dart';
+import 'package:reminder/screens/category_screen/create_category.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
+import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/screens/event_screen/create_event.dart';
@@ -36,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
         value: EventService().getAllEvents(),
         child: CalendarScreen(),
       ),
-      CategoryScreen(),
+      StreamProvider<List<Category>>.value(
+        value: CategoryService().getAllCategories(),
+        child: CategoryScreen(),
+      ),
       Center(child: Text('Settings')),
     ];
 
@@ -54,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             isScrollControlled: true,
             context: context,
-            builder: (_) => CreateEventWidget(
-              isEdit: false,
-            ),
+            builder: (_) => _bottomNavCategory
+                ? CreateCategoryWidget(isEdit: false)
+                : CreateEventWidget(isEdit: false),
           );
         },
         tooltip: 'Add Event',

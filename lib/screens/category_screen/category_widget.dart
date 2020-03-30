@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:reminder/models/category.dart';
 import 'package:reminder/themes/theme_color.dart';
 
 class CategoryWidget extends StatelessWidget {
-  final Icon icon;
-  final String label;
+  final Category category;
 
-  const CategoryWidget(this.icon, this.label, {Key key}) : super(key: key);
+  const CategoryWidget({
+    this.category,
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-            child: IconButton(
-              icon: icon,
-              color: ThemeColor.darkAccent,
-              onPressed: () {},
+    return Dismissible(
+      key: Key(category.name),
+      child: Card(
+        elevation: 2,
+        shape: Border(left: BorderSide(color: category.color, width: 3),),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(15),
+              child: Icon(
+                category.icon,
+                color: category.color,
+                size: 30,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: Text(
-              label,
+            Text(
+              category.name,
               style: TextStyle(
                   color: ThemeColor.title,
                   fontWeight: FontWeight.w700,
-                  fontSize: 12),
+                  fontSize: 18),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

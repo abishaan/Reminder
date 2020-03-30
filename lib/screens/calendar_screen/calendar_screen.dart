@@ -36,7 +36,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
     super.dispose();
   }
 
-
   Widget _buildEventList() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -74,12 +73,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return CalendarEventCard(
       RemindEvent(
-        id:id,
-        category: category,
-        description: description,
-        remindTime: remindTime,
-        remindDate: remindDate ?? _calenderDay
-      ),
+          id: id,
+          category: category,
+          description: description,
+          remindTime: remindTime,
+          remindDate: remindDate ?? _calenderDay),
     );
   }
 
@@ -105,27 +103,27 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _calendarIndicator(DateTime date, List<dynamic> events) {
     return events.isNotEmpty
         ? Positioned(
-      right: _calendarController.isSelected(date) ? 1 : null,
-      bottom: 1,
-      child: Container(
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _calendarController.isSelected(date)
-                ? ThemeColor.primaryAccent
-                : ThemeColor.accent),
-        width: 15.0,
-        height: 15.0,
-        child: Center(
-          child: Text(
-            '${events.length}',
-            style: TextStyle().copyWith(
-              color: Colors.white,
-              fontSize: 10.0,
+            right: _calendarController.isSelected(date) ? 1 : null,
+            bottom: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _calendarController.isSelected(date)
+                      ? ThemeColor.primaryAccent
+                      : ThemeColor.accent),
+              width: 15.0,
+              height: 15.0,
+              child: Center(
+                child: Text(
+                  '${events.length}',
+                  style: TextStyle().copyWith(
+                    color: Colors.white,
+                    fontSize: 10.0,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    )
+          )
         : SizedBox();
   }
 
@@ -137,23 +135,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return filteredList;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    calendarEvents = Provider.of<List<RemindEvent>>(context);
-    if (calendarEvents != null) {
-      calendarEvents.forEach((event) {
-        dates.add(event.remindDate);
-      });
+  setCalendarData(BuildContext context) {
+    calendarEvents = Provider.of<List<RemindEvent>>(context) ?? [];
+    calendarEvents.forEach((event) {
+      dates.add(event.remindDate);
+    });
 
-      dates.forEach((date) {
-        _events[DateTime.parse(date)] = _filterEvent(date) ?? [];
-      });
-    }
+    dates.forEach((date) {
+      _events[DateTime.parse(date)] = _filterEvent(date) ?? [];
+    });
 
     _selectedEvents = _events[DateTime.parse(DateFormat("yyyy-MM-dd")
             .parse(_calenderDay.toString())
             .toString())] ??
         [];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setCalendarData(context);
 
     return SafeArea(
       child: Scaffold(
@@ -186,5 +186,4 @@ class _CalendarScreenState extends State<CalendarScreen> {
           )),
     );
   }
-
 }
