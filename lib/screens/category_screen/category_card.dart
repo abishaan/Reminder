@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/create_category.dart';
 import 'package:reminder/services/category_service.dart';
+import 'package:reminder/services/event_service.dart';
 import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
@@ -56,9 +57,68 @@ class CategoryCard extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.delete),
                     title: Text('Delete'),
-                    onTap: () {
-                      CategoryService().deleteCategory(category.reference);
-                      Navigator.pop(context);
+                    onTap: () async {
+                      bool value = await EventService()
+                          .checkEventsByCategory(category.name);
+
+                      if (value) {
+                        showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          // user must tap button!
+                          builder: (BuildContext context) {
+                            return Container(
+                              child: AlertDialog(
+                                title: Text('Alert'),
+                                content: SingleChildScrollView(
+                                  child: ListBody(
+                                    children: <Widget>[
+                                      Text(
+                                          'Some events overlap with this category.\nAre you sure you want delete this category including all events'),
+                                    ],
+                                  ),
+                                ),
+                                actions: <Widget>[
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          child: Text(
+                                            'Cancel',
+                                            style: TextStyle(
+                                                color:
+                                                    ThemeColor.primaryAccent),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text('Proceed',
+                                              style: TextStyle(
+                                                  color: ThemeColor
+                                                      .primaryAccent)),
+                                          onPressed: () async {
+                                            await EventService()
+                                                .deleteEventsByCategory(
+                                                    category.name);
+//                                            await CategoryService()
+//                                                .deleteCategory(
+//                                                category.reference);
+                                            Navigator.of(context).pop();
+                                          },
+                                        ), // button 2
+                                      ])
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }else{
+                        CategoryService().deleteCategory(category.reference);
+                        Navigator.pop(context);
+                      }
                     },
                   ),
                 ],

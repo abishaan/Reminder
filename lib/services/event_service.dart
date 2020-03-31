@@ -17,6 +17,12 @@ class EventService {
         .map(_eventListFormSnapshot);
   }
 
+  Future<QuerySnapshot> getAllEventsByCategory(String category) async {
+    return _collectionReference
+        .where('category', isEqualTo: category)
+        .getDocuments();
+  }
+
   Stream<QuerySnapshot> getCurrentEventSnapshots() {
     return _collectionReference
         .where('remindDate',
@@ -33,7 +39,8 @@ class EventService {
           (document) => RemindEvent(
               reference: document.reference,
               category: document.data['category'] ?? '',
-              categoryColor: document.data['categoryColor'] ?? ThemeColor.primaryAccent.value,
+              categoryColor: document.data['categoryColor'] ??
+                  ThemeColor.primaryAccent.value,
               description: document.data['description'] ?? '',
               remindDate: document.data['remindDate'] ?? '',
               remindTime: document.data['remindTime'] ?? ''),
@@ -69,6 +76,33 @@ class EventService {
   deleteEventById(String id) async {
     try {
       await _collectionReference.document(id).delete();
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
+  }
+
+  checkEventsByCategory(String category) async {
+    try {
+      QuerySnapshot snapshot = await getAllEventsByCategory(category);
+      List<RemindEvent> events = _eventListFormSnapshot(snapshot);
+
+      if (events.isNotEmpty) {
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      print('Error: ${e.toString()}');
+    }
+  }
+
+  deleteEventsByCategory(String category) async {
+    try {
+      print(category);
+      QuerySnapshot snapshot = await getAllEventsByCategory(category);
+      print(snapshot.documents);
+      snapshot.documents.forEach(
+          (document) async => await deleteEventById(document.documentID));
     } catch (e) {
       print('Error: ${e.toString()}');
     }

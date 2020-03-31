@@ -28,13 +28,11 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   String _eventCategory;
   DateTime _eventDate;
   TimeOfDay _eventTime;
-  List<String> _categoryNames;
   Map<String, int> _categoryColorMap;
 
   @override
   void initState() {
     super.initState();
-    _categoryNames = ['Personal', 'Work', 'Other'];
     _categoryColorMap = {
       'Personal': Colors.pink.value,
       'Work': Colors.purple.value,
@@ -97,7 +95,10 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> _categoryNames = [];
     final categories = Provider.of<List<Category>>(context) ?? [];
+
+    _categoryNames = ['Personal', 'Work', 'Other'];
 
     categories.forEach((category) {
       _categoryColorMap[category.name] = category.color;
