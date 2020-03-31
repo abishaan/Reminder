@@ -22,8 +22,8 @@ class CategoryCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: BorderSide(
-            color: Color(category.color).withAlpha(30),
             width: 3,
+            color: ThemeColor.darkAccent.withAlpha(40),
           ),
         ),
         child: InkWell(
@@ -71,13 +71,17 @@ class CategoryCard extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(15),
-                child: Icon(
-                  IconData(
-                    category.iconCodePoint,
-                    fontFamily: Constants.iconFontFamily,
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Color(category.color),
+                  child: Icon(
+                    IconData(
+                      category.iconCodePoint,
+                      fontFamily: Constants.iconFontFamily,
+                    ),
+                    color: Colors.white,
+                    size: 20,
                   ),
-                  color: Color(category.color),
-                  size: 30,
                 ),
               ),
               Text(

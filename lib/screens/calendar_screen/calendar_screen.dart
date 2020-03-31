@@ -20,7 +20,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<RemindEvent> calendarEvents;
   HashSet<String> dates = HashSet();
   DateTime _calenderDay = DateTime.now();
-  Map<DateTime, List<String>> _events = new Map();
+  Map<DateTime, List<String>> _events = Map();
   CalendarController _calendarController = CalendarController();
 
   _onDaySelected(DateTime day, List events) {

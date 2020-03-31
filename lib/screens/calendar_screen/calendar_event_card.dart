@@ -15,9 +15,12 @@ class CalendarEventCard extends StatelessWidget {
       elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-              color: ThemeColor.primaryAccent.withAlpha(40), width: 3)),
+        borderRadius: BorderRadius.circular(20),
+        side: BorderSide(
+          width: 3,
+          color: ThemeColor.darkAccent.withAlpha(40),
+        ),
+      ),
       child: Container(
 //        height: 110,
         child: ClipRRect(
@@ -142,7 +145,7 @@ class CalendarEventCard extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 4,
-                                      color: Colors.deepPurpleAccent
+                                      color: Colors.red
                                           .withAlpha(700),
                                     ),
                                   ],

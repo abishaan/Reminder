@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:reminder/models/event.dart';
+import 'package:reminder/themes/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
 class EventService {
@@ -28,12 +29,15 @@ class EventService {
 
   List<RemindEvent> _eventListFormSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents
-        .map((document) => RemindEvent(
-            reference: document.reference,
-            category: document.data['category'] ?? '',
-            description: document.data['description'] ?? '',
-            remindDate: document.data['remindDate'] ?? '',
-            remindTime: document.data['remindTime'] ?? ''))
+        .map(
+          (document) => RemindEvent(
+              reference: document.reference,
+              category: document.data['category'] ?? '',
+              categoryColor: document.data['categoryColor'] ?? ThemeColor.primaryAccent.value,
+              description: document.data['description'] ?? '',
+              remindDate: document.data['remindDate'] ?? '',
+              remindTime: document.data['remindTime'] ?? ''),
+        )
         .toList();
   }
 
@@ -48,9 +52,7 @@ class EventService {
   updateEvent(RemindEvent event) async {
     String id = event.reference != null ? event.reference.documentID : event.id;
     try {
-      await _collectionReference
-          .document(id)
-          .updateData(event.toJson());
+      await _collectionReference.document(id).updateData(event.toJson());
     } catch (e) {
       print('Error: ${e.toString()}');
     }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reminder/themes/theme_color.dart';
 
 class RemindEvent {
   final String category;
@@ -6,6 +7,7 @@ class RemindEvent {
   final String remindDate;
   final String remindTime;
   final int timestamp;
+  final int categoryColor;
 
   String id;
   DocumentReference reference;
@@ -17,7 +19,8 @@ class RemindEvent {
       this.remindDate,
       this.remindTime,
       this.reference,
-      this.timestamp});
+      this.timestamp,
+      this.categoryColor});
 
   RemindEvent.fromSnapshot(DocumentSnapshot snapshot)
       : reference = snapshot.reference,
@@ -25,10 +28,12 @@ class RemindEvent {
         description = snapshot.data['description'] ?? '',
         remindDate = snapshot.data['remindDate'] ?? '',
         remindTime = snapshot.data['remindTime'] ?? '',
-        timestamp = snapshot.data['timestamp'] ?? 0;
+        timestamp = snapshot.data['timestamp'] ?? 0,
+        categoryColor = snapshot.data['categoryColor'] ?? ThemeColor.primaryAccent.value;
 
   toJson() => {
         'category': category,
+        'categoryColor': categoryColor,
         'description': description,
         'remindDate': remindDate,
         'remindTime': remindTime,
@@ -40,6 +45,8 @@ class RemindEvent {
     return reference.documentID +
         '^' +
         category +
+        '^' +
+        categoryColor.toString() +
         '^' +
         description +
         '^' +

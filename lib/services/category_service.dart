@@ -45,11 +45,6 @@ class CategoryService {
       iconCodePoint: 59641,
       name: 'Work',
     ));
-    addCategory(Category(
-      color: Colors.red.value,
-      iconCodePoint: 58740,
-      name: 'Other',
-    ));
   }
 
   updateCategory(Category category) async {

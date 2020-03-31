@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/category_card.dart';
+import 'package:reminder/services/category_service.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 
@@ -16,8 +17,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
       label,
       maxLines: 1,
       style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontSize: 25,
+          fontWeight: FontWeight.w800,
           color: ThemeColor.primaryAccent),
     );
   }
