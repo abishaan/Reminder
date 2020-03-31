@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/models/category.dart';
+import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/create_event.dart';
@@ -47,8 +50,11 @@ class EventCard extends StatelessWidget {
                           ),
                           isScrollControlled: true,
                           context: context,
-                          builder: (_) => CreateEventWidget(
-                              event: remindEvent, isEdit: true),
+                          builder: (_) => StreamProvider<List<Category>>.value(
+                            value: CategoryService().getAllCategories(),
+                            child: CreateEventWidget(
+                                event: remindEvent, isEdit: true),
+                          ),
                         );
                       },
                     ),
@@ -84,7 +90,8 @@ class EventCard extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             spreadRadius: 4,
-                            color: Color(remindEvent.categoryColor).withAlpha(700),
+                            color:
+                                Color(remindEvent.categoryColor).withAlpha(700),
                           )
                         ],
                       ),
