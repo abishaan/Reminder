@@ -98,9 +98,7 @@ class EventService {
 
   deleteEventsByCategory(String category) async {
     try {
-      print(category);
       QuerySnapshot snapshot = await getAllEventsByCategory(category);
-      print(snapshot.documents);
       snapshot.documents.forEach(
           (document) async => await deleteEventById(document.documentID));
     } catch (e) {

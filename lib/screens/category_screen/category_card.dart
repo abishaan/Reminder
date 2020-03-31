@@ -14,6 +14,13 @@ class CategoryCard extends StatelessWidget {
     Key key,
   }) : super(key: key);
 
+  showAlertDialog(BuildContext context, AlertDialog alert) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => alert);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,23 +65,42 @@ class CategoryCard extends StatelessWidget {
                     leading: Icon(Icons.delete),
                     title: Text('Delete'),
                     onTap: () async {
+                      showAlertDialog(
+                          context,
+                          AlertDialog(
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircularProgressIndicator(),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 18.0),
+                                  child: Text(
+                                    "Loading ...",
+                                    style: TextStyle(
+                                        color: ThemeColor.primaryAccent),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ));
+
                       bool value = await EventService()
                           .checkEventsByCategory(category.name);
 
                       if (value) {
-                        showDialog<void>(
+                        showDialog(
                           context: context,
                           barrierDismissible: false,
                           // user must tap button!
                           builder: (BuildContext context) {
                             return Container(
                               child: AlertDialog(
-                                title: Text('Alert'),
+                                title: Text('Overlapping Events!'),
                                 content: SingleChildScrollView(
                                   child: ListBody(
                                     children: <Widget>[
                                       Text(
-                                          'Some events overlap with this category.\nAre you sure you want delete this category including all events'),
+                                          'Are you sure you want delete this category including all events?')
                                     ],
                                   ),
                                 ),
@@ -92,6 +118,7 @@ class CategoryCard extends StatelessWidget {
                                           ),
                                           onPressed: () {
                                             Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
                                           },
                                         ),
                                         FlatButton(
@@ -100,13 +127,44 @@ class CategoryCard extends StatelessWidget {
                                                   color: ThemeColor
                                                       .primaryAccent)),
                                           onPressed: () async {
+                                            showAlertDialog(
+                                                context,
+                                                AlertDialog(
+                                                  content: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      CircularProgressIndicator(),
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 5),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 18.0),
+                                                          child: Text(
+                                                            "Deleting Data ...",
+                                                            style: TextStyle(
+                                                                color: ThemeColor
+                                                                    .primaryAccent),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ));
                                             await EventService()
                                                 .deleteEventsByCategory(
                                                     category.name);
-//                                            await CategoryService()
-//                                                .deleteCategory(
-//                                                category.reference);
-                                            Navigator.of(context).pop();
+                                            await CategoryService()
+                                                .deleteCategory(
+                                                    category.reference);
+                                            Navigator.of(context).pop(); //delete
+                                            Navigator.of(context).pop(); // alert
+                                            Navigator.of(context).pop(); //loading
+                                            Navigator.of(context).pop(); //edit
                                           },
                                         ), // button 2
                                       ])
@@ -115,7 +173,7 @@ class CategoryCard extends StatelessWidget {
                             );
                           },
                         );
-                      }else{
+                      } else {
                         CategoryService().deleteCategory(category.reference);
                         Navigator.pop(context);
                       }
