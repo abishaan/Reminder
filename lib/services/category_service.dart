@@ -34,19 +34,6 @@ class CategoryService {
     }
   }
 
-  addBasicCategories() {
-    addCategory(Category(
-      color: Colors.pink.value,
-      iconCodePoint: 59389,
-      name: 'Personal',
-    ));
-    addCategory(Category(
-      color: Colors.purple.value,
-      iconCodePoint: 59641,
-      name: 'Work',
-    ));
-  }
-
   updateCategory(Category category) async {
     try {
       await _collectionReference

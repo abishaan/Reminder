@@ -21,10 +21,7 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
   final _formKey = GlobalKey<FormState>();
   final List<String> _icons = [
     'Personal',
-    'Study',
     'Work',
-    'Appoinment',
-    'Other'
   ];
 
   //form values
