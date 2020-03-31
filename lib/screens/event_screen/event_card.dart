@@ -84,7 +84,7 @@ class EventCard extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             spreadRadius: 4,
-                            color: ThemeColor.accent.withAlpha(700),
+                            color: Color(remindEvent.categoryColor).withAlpha(700),
                           )
                         ],
                       ),
@@ -120,7 +120,7 @@ class EventCard extends StatelessWidget {
                                   spreadRadius: 4,
                                   color: index % 2 == 0
                                       ? Colors.deepPurpleAccent.withAlpha(700)
-                                      : Colors.redAccent.withAlpha(700),
+                                      : Colors.red.withAlpha(700),
                                 ),
                               ],
                             ),

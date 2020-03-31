@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/category_card.dart';
-import 'package:reminder/services/category_service.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:reminder/themes/theme_color.dart';
 

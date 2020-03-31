@@ -46,6 +46,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _buildEventRow(String event) {
     String id = '';
     String category = '';
+    String categoryColor = '';
     String description = '';
     String remindTime = '';
     String remindDate = '';
@@ -60,12 +61,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
           category = element;
           break;
         case 2:
-          description = element;
+          categoryColor = element;
           break;
         case 3:
-          remindTime = element;
+          description = element;
           break;
         case 4:
+          remindTime = element;
+          break;
+        case 5:
           remindDate = element;
           break;
       }
@@ -75,6 +79,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       RemindEvent(
           id: id,
           category: category,
+          categoryColor: int.parse(categoryColor),
           description: description,
           remindTime: remindTime,
           remindDate: remindDate ?? _calenderDay),

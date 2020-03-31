@@ -71,7 +71,8 @@ class CalendarEventCard extends StatelessWidget {
                   right: -60,
                   child: ClipRect(
                     child: CircleAvatar(
-                      backgroundColor: ThemeColor.lightPurple.withAlpha(20),
+                      backgroundColor:
+                          ThemeColor.lightPurple.withAlpha(20),
                       radius: 70,
                     ),
                   ),
@@ -111,7 +112,7 @@ class CalendarEventCard extends StatelessWidget {
                             boxShadow: [
                               BoxShadow(
                                 spreadRadius: 4,
-                                color: ThemeColor.accent.withAlpha(700),
+                                color: Color(remindEvent.categoryColor).withAlpha(700),
                               )
                             ],
                           ),
@@ -145,7 +146,7 @@ class CalendarEventCard extends StatelessWidget {
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 4,
-                                      color: Colors.red
+                                      color: Colors.deepPurpleAccent
                                           .withAlpha(700),
                                     ),
                                   ],

@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
-import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/themes/theme_color.dart';
@@ -97,7 +96,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   Widget build(BuildContext context) {
     List<String> _categoryNames = [];
     final categories = Provider.of<List<Category>>(context) ?? [];
-    
+
     _categoryNames = ['Personal', 'Work', 'Other'];
 
     categories.forEach((category) {
