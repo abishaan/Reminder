@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/category_card.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 
 class CategoryScreen extends StatefulWidget {
   @override

@@ -3,7 +3,7 @@ import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/create_category.dart';
 import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
 class CategoryCard extends StatelessWidget {

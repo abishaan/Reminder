@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 
 class ProfileLabel extends StatelessWidget {
   const ProfileLabel({

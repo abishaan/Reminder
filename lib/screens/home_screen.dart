@@ -10,7 +10,7 @@ import 'package:reminder/screens/category_screen/create_category.dart';
 import 'package:reminder/screens/event_screen/event_screen.dart';
 import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/screens/event_screen/create_event.dart';
 
 class HomeScreen extends StatefulWidget {

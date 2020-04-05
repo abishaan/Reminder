@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/calendar_screen/calendar_event_card.dart';
 import 'package:reminder/screens/calendar_screen/calendar_style.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 

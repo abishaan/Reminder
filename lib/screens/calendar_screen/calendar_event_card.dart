@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reminder/models/event.dart';
 import 'package:reminder/screens/event_screen/create_event.dart';
 import 'package:reminder/services/event_service.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 
 class CalendarEventCard extends StatelessWidget {
   final RemindEvent remindEvent;

@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_iconpicker/Models/IconPack.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/services/category_service.dart';
-import 'package:reminder/themes/theme_color.dart';
+import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
 class CreateCategoryWidget extends StatefulWidget {
@@ -19,15 +21,11 @@ class CreateCategoryWidget extends StatefulWidget {
 
 class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> _icons = [
-    'Personal',
-    'Work',
-  ];
 
   //form values
   DocumentReference _reference;
   String _categoryName;
-  IconData _categoryIcon = Icons.category;
+  IconData _categoryIcon = Icons.image;
   Color _categoryColor = ThemeColor.primaryAccent;
 
   @override
@@ -45,7 +43,16 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
     }
   }
 
-  void _validateForm() {
+  _selectCategoryIcon() async {
+    IconData icon = await FlutterIconPicker.showIconPicker(context,
+        iconPackMode: IconPack.material);
+
+    setState(() {
+      _categoryIcon = icon != null ? icon : Icons.image;
+    });
+  }
+
+  _validateForm() {
     if (_formKey.currentState.validate()) {
       Category category = new Category(
           reference: _reference,
@@ -114,11 +121,10 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
               ),
               Divider(),
               InkWell(
-                onTap: () {
-                },
+                onTap: _selectCategoryIcon,
                 child: ListTile(
                   leading: CircleAvatar(
-                    child: Icon(Icons.image, color: Colors.white),
+                    child: Icon(_categoryIcon, color: Colors.white),
                     backgroundColor: ThemeColor.primaryAccent,
                   ),
                   title: Text(
