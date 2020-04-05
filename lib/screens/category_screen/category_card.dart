@@ -3,6 +3,7 @@ import 'package:reminder/models/category.dart';
 import 'package:reminder/screens/category_screen/create_category.dart';
 import 'package:reminder/services/category_service.dart';
 import 'package:reminder/services/event_service.dart';
+import 'package:reminder/utils/custom_alert_dialog.dart';
 import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
@@ -13,13 +14,6 @@ class CategoryCard extends StatelessWidget {
     this.category,
     Key key,
   }) : super(key: key);
-
-  showAlertDialog(BuildContext context, AlertDialog alert) {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => alert);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,28 +59,14 @@ class CategoryCard extends StatelessWidget {
                     leading: Icon(Icons.delete),
                     title: Text('Delete'),
                     onTap: () async {
-                      showAlertDialog(
-                          context,
-                          AlertDialog(
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 18.0),
-                                  child: Text(
-                                    "Deleting ...",
-                                    style: TextStyle(
-                                        color: ThemeColor.primaryAccent),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ));
+                      CustomAlertDialog(
+                        context: context,
+                        message: "Deleting ...",
+                      ).show();
 
                       bool value = await EventService()
                           .checkEventsByCategory(category.name);
-                      print(value);
+
                       if (value) {
                         showDialog(
                           context: context,
@@ -127,34 +107,11 @@ class CategoryCard extends StatelessWidget {
                                                   color: ThemeColor
                                                       .primaryAccent)),
                                           onPressed: () async {
-                                            showAlertDialog(
-                                                context,
-                                                AlertDialog(
-                                                  content: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      CircularProgressIndicator(),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 5),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 18.0),
-                                                          child: Text(
-                                                            "Deleting Data ...",
-                                                            style: TextStyle(
-                                                                color: ThemeColor
-                                                                    .primaryAccent),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ));
+                                            CustomAlertDialog(
+                                              context: context,
+                                              message: "Deleting Data...",
+                                            ).show();
+
                                             await EventService()
                                                 .deleteEventsByCategory(
                                                     category.name);

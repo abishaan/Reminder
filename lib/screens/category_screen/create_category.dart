@@ -6,6 +6,7 @@ import 'package:flutter_iconpicker/Models/IconPack.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:reminder/models/category.dart';
 import 'package:reminder/services/category_service.dart';
+import 'package:reminder/utils/custom_alert_dialog.dart';
 import 'package:reminder/utils/theme_color.dart';
 import 'package:reminder/utils/constants.dart';
 
@@ -41,15 +42,6 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
       );
       _categoryName = widget.category.name;
     }
-  }
-
-  _selectCategoryIcon() async {
-    IconData icon = await FlutterIconPicker.showIconPicker(context,
-        iconPackMode: IconPack.material);
-
-    setState(() {
-      _categoryIcon = icon != null ? icon : Icons.image;
-    });
   }
 
   _validateForm() {
@@ -121,7 +113,22 @@ class _CreateCategoryWidgetState extends State<CreateCategoryWidget> {
               ),
               Divider(),
               InkWell(
-                onTap: _selectCategoryIcon,
+                onTap: () async {
+                  CustomAlertDialog(
+                    context: context,
+                    message: "Loading Icons ...",
+                  ).show();
+
+                  IconData icon = await FlutterIconPicker.showIconPicker(
+                      context,
+                      iconPackMode: IconPack.material);
+                  Navigator.pop(context);
+
+                  setState(() {
+                    _categoryIcon = icon != null ? icon : Icons.image;
+                  });
+
+                },
                 child: ListTile(
                   leading: CircleAvatar(
                     child: Icon(_categoryIcon, color: Colors.white),

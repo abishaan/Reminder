@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reminder/utils/theme_color.dart';
 
 class EmptyImageWidget extends StatelessWidget {
   final String imagePath;
@@ -18,11 +19,12 @@ class EmptyImageWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: topPadding),
           child: CircleAvatar(
-            radius: 80,
-            backgroundColor: Colors.grey.withAlpha(50),
+            radius: 100,
+            backgroundColor: Colors.grey.withAlpha(30),
             child: Image.asset(
               imagePath,
-              scale: 5,
+              scale: 4.5,
+              color: ThemeColor.primaryAccent,
             ),
           ),
         ),

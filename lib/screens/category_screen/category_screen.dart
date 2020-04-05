@@ -16,8 +16,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       label,
       maxLines: 1,
       style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.w800,
+          fontSize: 24,
           color: ThemeColor.primaryAccent),
     );
   }
@@ -47,7 +46,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       title: 'You have no categories for your events.',
                       subtitle:
                           'Create some categories? Tap + to write them down.',
-                      imagePath: 'assets/images/archive.png'),
+                      imagePath: 'assets/images/category.png'),
                 ],
               ),
       ),

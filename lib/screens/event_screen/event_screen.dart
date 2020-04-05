@@ -44,7 +44,7 @@ class EventScreen extends StatelessWidget {
                             title: 'You have a free day.',
                             subtitle:
                                 'Ready for some new events? Tap + to write them down.',
-                            imagePath: 'assets/images/archive.png'),
+                            imagePath: 'assets/images/plan.png'),
                       ],
                     );
             }),
