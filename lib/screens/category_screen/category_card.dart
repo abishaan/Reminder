@@ -75,7 +75,7 @@ class CategoryCard extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 18.0),
                                   child: Text(
-                                    "Loading ...",
+                                    "Deleting ...",
                                     style: TextStyle(
                                         color: ThemeColor.primaryAccent),
                                   ),
@@ -86,7 +86,7 @@ class CategoryCard extends StatelessWidget {
 
                       bool value = await EventService()
                           .checkEventsByCategory(category.name);
-
+                      print(value);
                       if (value) {
                         showDialog(
                           context: context,
@@ -161,9 +161,12 @@ class CategoryCard extends StatelessWidget {
                                             await CategoryService()
                                                 .deleteCategory(
                                                     category.reference);
-                                            Navigator.of(context).pop(); //delete
-                                            Navigator.of(context).pop(); // alert
-                                            Navigator.of(context).pop(); //loading
+                                            Navigator.of(context)
+                                                .pop(); //delete
+                                            Navigator.of(context)
+                                                .pop(); // alert
+                                            Navigator.of(context)
+                                                .pop(); //loading
                                             Navigator.of(context).pop(); //edit
                                           },
                                         ), // button 2
@@ -175,6 +178,7 @@ class CategoryCard extends StatelessWidget {
                         );
                       } else {
                         CategoryService().deleteCategory(category.reference);
+                        Navigator.pop(context);
                         Navigator.pop(context);
                       }
                     },
