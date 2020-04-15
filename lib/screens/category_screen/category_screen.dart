@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/models/category.dart';
@@ -42,6 +43,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 })
             : ListView(
                 children: <Widget>[
+                  SizedBox(
+                    height: 20,
+                  ),
                   EmptyImageWidget(
                       title: 'You have no categories for your events.',
                       subtitle:

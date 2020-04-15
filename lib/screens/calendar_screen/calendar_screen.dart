@@ -173,9 +173,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 color: ThemeColor.primaryAccent.withAlpha(10),
                 child: Text(
                   DateFormat.yMMMd().format(_calenderDay).toString(),
-                  style: TextStyle(
-                    color: ThemeColor.subTitle,
-                  ),
+                  style: TextStyle(color: Colors.grey[600]),
                 ),
               ),
               _selectedEvents.length == 0

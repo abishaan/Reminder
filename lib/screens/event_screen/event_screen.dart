@@ -7,6 +7,21 @@ import 'package:reminder/services/event_service.dart';
 import 'package:reminder/shared/empty_image_widget.dart';
 
 class EventScreen extends StatelessWidget {
+  Widget _emptyWidget() {
+    return ListView(
+      children: <Widget>[
+        ProfileLabel(),
+        SizedBox(
+          height: 20,
+        ),
+        EmptyImageWidget(
+            title: 'You have a free day.',
+            subtitle: 'Ready for some new events? Tap + to write them down.',
+            imagePath: 'assets/images/plan.png'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -15,7 +30,7 @@ class EventScreen extends StatelessWidget {
         body: StreamBuilder<QuerySnapshot>(
             stream: EventService().getCurrentEventSnapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return LinearProgressIndicator();
+              if (!snapshot.hasData) return _emptyWidget();
               return snapshot.data.documents.length > 0
                   ? ListView(
                       children: <Widget>[
@@ -37,16 +52,7 @@ class EventScreen extends StatelessWidget {
                         ),
                       ],
                     )
-                  : ListView(
-                      children: <Widget>[
-                        ProfileLabel(),
-                        EmptyImageWidget(
-                            title: 'You have a free day.',
-                            subtitle:
-                                'Ready for some new events? Tap + to write them down.',
-                            imagePath: 'assets/images/plan.png'),
-                      ],
-                    );
+                  : _emptyWidget();
             }),
       ),
     );
